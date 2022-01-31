@@ -44,12 +44,12 @@
         <th scope="col">language</th>
         <th scope="col">code</th>
         <th scope="col">colour</th>
+        <th scope="col">secondaryColour</th>
         <th scope="col">image</th>
         <th scope="col">introText</th>
         <th scope="col">links</th>
         <th scope="col">mainSponsor</th>
         <th scope="col">name</th>
-        <th scope="col">secondaryColour</th>
         <th scope="col">tags</th>
         <th scope="col">type</th>
       </thead>
@@ -57,8 +57,12 @@
     </table>
   </body>
   <script>
+    // const baseUrl =
+    //   "https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}";
     const baseUrl =
       "https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}";
+    //TODO change url in list
+    //TODO order sponsors by mainSponsor
     const arrayResponseHashes = [];
 
     /*
@@ -78,10 +82,17 @@
     /*
     print column from values 
     */
-    const printColumn = (newRow, propValue) => {
+    const printColumn = (
+      newRow,
+      propValue,
+      bgColor = "white",
+      color = "black"
+    ) => {
       const prop = newRow.insertCell();
       const propText = document.createTextNode(propValue);
       prop.appendChild(propText);
+      prop.style.backgroundColor = bgColor;
+      prop.style.color = color;
     };
 
     /*
@@ -97,6 +108,14 @@
         ul.appendChild(li);
       }
       prop.appendChild(ul);
+    };
+
+    /*
+    print columns for the 2 colors
+    */
+    const printColourColumns = (newRow, colour, secondaryColour) => {
+      printColumn(newRow, colour, colour, secondaryColour);
+      printColumn(newRow, secondaryColour, secondaryColour, colour);
     };
 
     /*
@@ -143,7 +162,12 @@
                   // Insert a cell at the end of the row
                   printColumn(newRow, sponsor.language);
                   printColumn(newRow, sponsor.code);
-                  printColumn(newRow, sponsor.colour);
+
+                  printColourColumns(
+                    newRow,
+                    sponsor.colour,
+                    sponsor.secondaryColour
+                  );
 
                   const image = newRow.insertCell();
                   var img = document.createElement("img");
@@ -155,7 +179,7 @@
 
                   printColumn(newRow, sponsor.mainSponsor);
                   printColumn(newRow, sponsor.name);
-                  printColumn(newRow, sponsor.secondaryColour);
+
                   printColumn(newRow, sponsor.tags);
                   printColumn(newRow, sponsor.type);
                 } else {
