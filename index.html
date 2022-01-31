@@ -13,43 +13,80 @@
       img {
         width: 200px;
       }
+      input {
+        width: 300px;
+      }
     </style>
   </head>
   <body>
-    <h1>Sponsor page</h1>
-    <input type="number" id="competitionId" name="competitionId" />
+    <h1>Sponsor TEST page - Based on INT endpoint</h1>
+    <input
+      type="number"
+      id="competitionId"
+      name="competitionId"
+      placeholder="Competition ID"
+    />
+
+    <input
+      type="text"
+      id="countryCodes"
+      name="countryCodes"
+      placeholder="Country Codes - separated by commas"
+      value="GB,FR,ES,IT,CN,DE,RU"
+    />
+
     <button onclick="getCompetitionData()">Get competition Data</button>
+
+    <a href="country-codes.csv">Download country codes list</a>
 
     <table id="sponsor-table">
       <thead>
-        <th>language</th>
-        <th>code</th>
-        <th>colour</th>
-        <th>image</th>
-        <th>introText</th>
-        <th>links</th>
-        <th>mainSponsor</th>
-        <th>name</th>
-        <th>secondaryColour</th>
-        <th>tags</th>
-        <th>type</th>
+        <th scope="col">language</th>
+        <th scope="col">code</th>
+        <th scope="col">colour</th>
+        <th scope="col">image</th>
+        <th scope="col">introText</th>
+        <th scope="col">links</th>
+        <th scope="col">mainSponsor</th>
+        <th scope="col">name</th>
+        <th scope="col">secondaryColour</th>
+        <th scope="col">tags</th>
+        <th scope="col">type</th>
       </thead>
       <tbody></tbody>
     </table>
   </body>
   <script>
-    //TODO use real lang list
-    //TODO group same data by languages (save hash of response and print only different ones with languages in array)
-    const countryCodeArray = ["EN", "FR", "ES", "IT"];
     const baseUrl =
-      "https://fsp-sponsor-service.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}";
+      "https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}";
+    const arrayResponseHashes = [];
 
+    /*
+    super simple hashing function
+    */
+    String.prototype.hashCode = function () {
+      var hash = 0;
+      for (var i = 0; i < this.length; i++) {
+        var char = this.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        // Convert to 32bit integer
+        hash = hash & hash;
+      }
+      return hash;
+    };
+
+    /*
+    print column from values 
+    */
     const printColumn = (newRow, propValue) => {
       const prop = newRow.insertCell();
       const propText = document.createTextNode(propValue);
       prop.appendChild(propText);
     };
 
+    /*
+    print column from list of values
+    */
     const printColumnList = (newRow, propObj) => {
       const prop = newRow.insertCell();
       var ul = document.createElement("ul");
@@ -61,20 +98,29 @@
       }
       prop.appendChild(ul);
     };
+
+    /*
+    onclick button handler
+    */
     const getCompetitionData = () => {
+      //get values from inputs
       const inputValue = document.getElementById("competitionId").value;
-      console.log("comp choosen: ", [inputValue]);
+      const inputCountryCodes = document.getElementById("countryCodes").value;
+      let countryCodesArray = inputCountryCodes.split(",");
+      countryCodesArray = countryCodesArray.map((cc) => cc.trim());
+      console.log("values choosen: ", [inputValue], countryCodesArray);
       const competitionIdArray = [inputValue];
 
-      const sponsorsArray = [];
       const tbodyRef = document
         .getElementById("sponsor-table")
         .getElementsByTagName("tbody")[0];
-      //cleanup table
+      //cleanup old table
       tbodyRef.innerHTML = "";
+      arrayResponseHashes.length = 0;
 
+      //loop through comp and countries
       competitionIdArray.forEach((competitionId) => {
-        countryCodeArray.forEach((countryCode) => {
+        countryCodesArray.forEach((countryCode) => {
           const url = baseUrl
             .replace("{competition}", competitionId)
             .replace("{countryCode}", countryCode);
@@ -84,35 +130,48 @@
             .then((response) => response.json())
             .then((sponsors) => {
               sponsors.forEach((sponsor) => {
-                sponsor.language = countryCode;
-                sponsorsArray.push(sponsor);
+                //check if hash is in array, in case add language to column
+                const respHash = JSON.stringify(sponsor).hashCode();
+                if (!arrayResponseHashes.includes(respHash)) {
+                  arrayResponseHashes.push(respHash);
+                  sponsor.language = countryCode;
 
-                // Insert a row at the end of table
-                const newRow = tbodyRef.insertRow();
+                  // Insert a row at the end of table
+                  const newRow = tbodyRef.insertRow();
+                  newRow.id = sponsor.code;
 
-                // Insert a cell at the end of the row
-                printColumn(newRow, sponsor.language);
-                printColumn(newRow, sponsor.code);
-                printColumn(newRow, sponsor.colour);
+                  // Insert a cell at the end of the row
+                  printColumn(newRow, sponsor.language);
+                  printColumn(newRow, sponsor.code);
+                  printColumn(newRow, sponsor.colour);
 
-                const image = newRow.insertCell();
-                var img = document.createElement("img");
-                img.src = sponsor.image;
-                image.appendChild(img);
+                  const image = newRow.insertCell();
+                  var img = document.createElement("img");
+                  img.src = sponsor.image;
+                  image.appendChild(img);
 
-                printColumnList(newRow, sponsor.introText.translations);
-                printColumnList(newRow, sponsor.links);
+                  printColumnList(newRow, sponsor.introText.translations);
+                  printColumnList(newRow, sponsor.links);
 
-                printColumn(newRow, sponsor.mainSponsor);
-                printColumn(newRow, sponsor.name);
-                printColumn(newRow, sponsor.secondaryColour);
-                printColumn(newRow, sponsor.tags);
-                printColumn(newRow, sponsor.type);
+                  printColumn(newRow, sponsor.mainSponsor);
+                  printColumn(newRow, sponsor.name);
+                  printColumn(newRow, sponsor.secondaryColour);
+                  printColumn(newRow, sponsor.tags);
+                  printColumn(newRow, sponsor.type);
+                } else {
+                  //I find the existing row with the sponsor and I add the language to the column
+                  const existingRow = document.getElementById(sponsor.code);
+                  if (existingRow) {
+                    let value =
+                      existingRow.getElementsByTagName("TD")[0].innerHTML;
+                    existingRow.getElementsByTagName("TD")[0].innerHTML =
+                      value + ", " + countryCode;
+                  }
+                }
               });
             });
         });
       });
     };
-    const competitionIdArray = [1, 3, 2014];
   </script>
 </html>
