@@ -1,0 +1,249 @@
+isoCode,name,fifaCode
+AD,"Andorra",AND
+AE,"United Arab Emirates",UAE
+AF,"Afghanistan",AFG
+AG,"Antigua and Barbuda",ATG
+AI,"Anguilla",AIA
+AL,"Albania",ALB
+AM,"Armenia",ARM
+AO,"Angola",ANG
+AQ,"Antarctica",ATA
+AR,"Argentina",ARG
+AS,"American Samoa",ASA
+AT,"Austria",AUT
+AU,"Australia",AUS
+AW,"Aruba",ARU
+AZ,"Azerbaijan",AZE
+BA,"Bosnia and Herzegovina",BIH
+BB,"Barbados",BRB
+BD,"Bangladesh",BAN
+BE,"Belgium",BEL
+BF,"Burkina Faso",BFA
+BG,"Bulgaria",BUL
+BH,"Bahrain",BHR
+BI,"Burundi",BDI
+BJ,"Benin",BEN
+BL,"Saint Barthelemy",BLM
+BM,"Bermuda",BER
+BN,"Brunei Darussalam",BRU
+BO,"Bolivia",BOL
+BQ,"Bonaire, Saint Eustatius and Saba",BES
+BR,"Brazil",BRA
+BS,"Bahamas",BAH
+BT,"Bhutan",BHU
+BV,"Bouvet Island",BVT
+BW,"Botswana",BOT
+BY,"Belarus",BLR
+BZ,"Belize",BLZ
+CA,"Canada",CAN
+CC,"Cocos (Keeling) Islands",CCK
+CD,"Congo, Democratic Republic of the",COD
+CF,"Central African Republic",CTA
+CG,"Congo",CGO
+CH,"Switzerland",SUI
+CI,"Cote d'Ivoire",CIV
+CK,"Cook Islands",COK
+CL,"Chile",CHI
+CM,"Cameroon",CMR
+CN,"China",CHN
+CO,"Colombia",COL
+CR,"Costa Rica",CRC
+CU,"Cuba",CUB
+CV,"Cape Verde",CPV
+CW,"Curacao",CUW
+CX,"Christmas Island",CXR
+CY,"Cyprus",CYP
+CZ,"Czech Republic",CZE
+DE,"Germany",GER
+DJ,"Djibouti",DJI
+DK,"Denmark",DEN
+DM,"Dominica",DMA
+DO,"Dominican Republic",DOM
+DZ,"Algeria",ALG
+EC,"Ecuador",ECU
+EE,"Estonia",EST
+EG,"Egypt",EGY
+EH,"Western Sahara",ESH
+ER,"Eritrea",ERI
+ES,"Spain",ESP
+ET,"Ethiopia",ETH
+FI,"Finland",FIN
+FJ,"Fiji",FIJ
+FK,"Falkland Islands (Malvinas)",FLK
+FM,"Micronesia, Federated States of",FSM
+FO,"Faroe Islands",FRO
+FR,"France",FRA
+GA,"Gabon",GAB
+GB,"United Kingdom",GBR
+GD,"Grenada",GRN
+GE,"Georgia",GEO
+GF,"French Guiana",GUF
+GH,"Ghana",GHA
+GI,"Gibraltar",GIB
+GG,"Guernsey",GGY
+GL,"Greenland",GRL
+GM,"Gambia",GAM
+GN,"Guinea",GUI
+GP,"Guadeloupe",GLP
+GQ,"Equatorial Guinea",EQG
+GR,"Greece",GRE
+GS,"South Georgia/South Sandwich Isl.",SGS
+GT,"Guatemala",GUA
+GU,"Guam",GUM
+GW,"Guinea-Bissau",GNB
+GY,"Guyana",GUY
+HK,"Hong Kong",HKG
+HM,"Heard Island and Mcdonald Islands",HMD
+HN,"Honduras",HUN
+HR,"Croatia",CRO
+HT,"Haiti",HAI
+HU,"Hungary",HUN
+ID,"Indonesia",IDN
+IE,"Ireland",IRL
+IL,"Israel",ISR
+IM,"Isle of Man",IMN
+IN,"India",IND
+IO,"British Indian Ocean Territory",IOT
+IQ,"Iraq",IRQ
+IR,"Iran",IRN
+IS,"Iceland",ISL
+IT,"Italy",ITA
+JE,"Jersey",JEY
+JM,"Jamaica",JAM
+JO,"Jordan",JOR
+JP,"Japan",JPN
+KE,"Kenya",KEN
+KG,"Kyrgyzstan",KGZ
+KH,"Cambodia",CAM
+KI,"Kiribati",KIR
+KM,"Comoros",COM
+KN,"Saint Kitts and Nevis",SKN
+KP,"North Korea",PRK
+KR,"South Korea",KOR
+KW,"Kuwait",KUW
+KY,"Cayman Islands",CAY
+KZ,"Kazakhstan",KAZ
+LA,"Laos",LAO
+LB,"Lebanon",LIB
+LC,"Saint Lucia",LCA
+LI,"Liechtenstein",LIE
+LK,"Sri Lanka",SRI
+LR,"Liberia",LBR
+LS,"Lesotho",LES
+LT,"Lithuania",LTU
+LU,"Luxembourg",LUX
+LV,"Latvia",LVA
+LY,"Libyan Arab Jamahiriya",LBY
+MA,"Morocco",MAR
+MC,"Monaco",MCO
+MD,"Moldova",MDA
+ME,"Montenegro",MNE
+MF,"Saint Martin",
+MG,"Madagascar",MAD
+MH,"Marshall Islands",MHL
+MK,"Macedonia",MKD
+ML,"Mali",MLI
+MM,"Myanmar",MYA
+MN,"Mongolia",MGL
+MO,"Macau",MAC
+MP,"Northern Mariana Islands",MNP
+MQ,"Martinique",MTQ
+MR,"Mauritania",MTN
+MS,"Montserrat",MSR
+MT,"Malta",MLT
+MU,"Mauritius",MRI
+MV,"Maldives",MDV
+MW,"Malawi",MWI
+MX,"Mexico",MEX
+MY,"Malaysia",MAS
+MZ,"Mozambique",MOZ
+NA,"Namibia",NAM
+NC,"New Caledonia",NCL
+NE,"Niger",NIG
+NF,"Norfolk Island",NFK
+NG,"Nigeria",NGA
+NI,"Nicaragua",NCA
+NL,"Netherlands",NED
+NO,"Norway",NOR
+NP,"Nepal",NEP
+NR,"Nauru",NIR
+NU,"Niue",NIU
+NZ,"New Zealand",NZL
+OM,"Oman",OMA
+PA,"Panama",PAN
+PE,"Peru",PER
+PF,"French Polynesia",PYF
+PG,"Papua New Guinea",PNG
+PH,"Philippines",PHI
+PK,"Pakistan",PAK
+PL,"Poland",POL
+PM,"Saint Pierre and Miquelon",SPM
+PN,"Pitcairn",SPM
+PR,"Puerto Rico",PUR
+PS,"Palestinian Territory, Occupied",PLE
+PT,"Portugal",POR
+PW,"Palau",PLW
+PY,"Paraguay",PAR
+QA,"Qatar",QAT
+RE,"Reunion",REU
+RO,"Romania",ROU
+RS,"Serbia",SRB
+RU,"Russian Federation",RUS
+RW,"Rwanda",RWA
+SA,"Saudi Arabia",KSA
+SB,"Solomon Islands",SOL
+SC,"Seychelles",SEY
+SD,"Sudan",SUD
+SE,"Sweden",SWE
+SG,"Singapore",SIN
+SH,"Saint Helena",SHN
+SI,"Slovenia",SVN
+SJ,"Svalbard and Jan Mayen",SJM
+SK,"Slovakia",SVK
+SL,"Sierra Leone",SLE
+SM,"San Marino",SMR
+SN,"Senegal",SEN
+SO,"Somalia",SOM
+SR,"Suriname",SUR
+SS,"South Sudan",SCO
+ST,"Sao Tome and Principe",STP
+SV,"El Salvador",SLV
+SX,"Sint Maarten",SXM
+SY,"Syrian Arab Republic",SYR
+SZ,"Swaziland",SWZ
+TC,"Turks and Caicos Islands",TCA
+TD,"Chad",CHA
+TF,"French Southern Territories",ATF
+TG,"Togo",TGO
+TH,"Thailand",THA
+TJ,"Tajikistan",TJK
+TK,"Tokelau",TKL
+TM,"Turkmenistan",TKM
+TN,"Tunisia",TUN
+TO,"Tonga",TGA
+TL,"East Timor",TLS
+TR,"Turkey",TUR
+TT,"Trinidad and Tobago",TRI
+TV,"Tuvalu",TUV
+TW,"Taiwan, Province of China",TPE
+TZ,"Tanzania, United Republic of",TAN
+UA,"Ukraine",UKR
+UG,"Uganda",UGA
+UM,"USA Minor Outlying Islands",UMI
+US,"United States",USA
+UY,"Uruguay",URU
+UZ,"Uzbekistan",UZB
+VA,"Vatican City State",VAT
+VC,"St Vincent and the Grenadines",VIN
+VE,"Venezuela",VEN
+VG,"Virgin Islands, British",VGB
+VI,"Virgin Islands, U.S.",VIR
+VN,"Viet Nam",VIE
+VU,"Vanuatu",VAN
+WF,"Wallis and Futuna",WLF
+WS,"Samoa",SAM
+YE,"Yemen",YEM
+YT,"Mayotte",MYT
+ZA,"South Africa",RSA
+ZM,"Zambia",ZAM
+ZW,"Zimbabwe",ZIM
