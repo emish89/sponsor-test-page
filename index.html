@@ -19,7 +19,22 @@
     </style>
   </head>
   <body>
-    <h1>Sponsor TEST page - Based on INT endpoint</h1>
+    <h1>Sponsor TEST page</h1>
+    <label for="baseUrl">Choose ENV:</label>
+
+    <select name="baseUrl" id="baseUrl">
+      <option
+        value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+      >
+        PROD - need UEFA VPN
+      </option>
+      <option
+        value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+      >
+        INT
+      </option>
+    </select>
+
     <input
       type="number"
       id="competitionId"
@@ -57,11 +72,6 @@
     </table>
   </body>
   <script>
-    // const baseUrl =
-    //   "https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}";
-    const baseUrl =
-      "https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}";
-    //TODO change url in list
     //TODO order sponsors by mainSponsor
     const arrayResponseHashes = [];
 
@@ -125,6 +135,7 @@
       //get values from inputs
       const inputValue = document.getElementById("competitionId").value;
       const inputCountryCodes = document.getElementById("countryCodes").value;
+      const baseUrl = document.getElementById("baseUrl").value;
       let countryCodesArray = inputCountryCodes.split(",");
       countryCodesArray = countryCodesArray.map((cc) => cc.trim());
       console.log("values choosen: ", [inputValue], countryCodesArray);
