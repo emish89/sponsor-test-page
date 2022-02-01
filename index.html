@@ -16,6 +16,9 @@
       input {
         width: 300px;
       }
+      th {
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -55,6 +58,9 @@
     <a href="country-codes.csv">Download country codes list</a>
 
     <table id="sponsor-table">
+      <caption>
+        Table with the result of the sponsors service api
+      </caption>
       <thead>
         <th scope="col">language</th>
         <th scope="col">code</th>
@@ -63,7 +69,7 @@
         <th scope="col">image</th>
         <th scope="col">introText</th>
         <th scope="col">links</th>
-        <th scope="col">mainSponsor</th>
+        <th id="indexTable" scope="col">mainSponsor</th>
         <th scope="col">name</th>
         <th scope="col">tags</th>
         <th scope="col">type</th>
@@ -72,11 +78,10 @@
     </table>
   </body>
   <script>
-    //TODO order sponsors by mainSponsor
     const arrayResponseHashes = [];
 
     /*
-    super simple hashing function
+      super simple hashing function
     */
     String.prototype.hashCode = function () {
       var hash = 0;
@@ -90,7 +95,7 @@
     };
 
     /*
-    print column from values 
+      print column from values
     */
     const printColumn = (
       newRow,
@@ -106,7 +111,7 @@
     };
 
     /*
-    print column from list of values
+      print column from list of values
     */
     const printColumnList = (newRow, propObj) => {
       const prop = newRow.insertCell();
@@ -121,7 +126,7 @@
     };
 
     /*
-    print columns for the 2 colors
+      print columns for the 2 colors
     */
     const printColourColumns = (newRow, colour, secondaryColour) => {
       printColumn(newRow, colour, colour, secondaryColour);
@@ -129,7 +134,7 @@
     };
 
     /*
-    onclick button handler
+      onclick button handler
     */
     const getCompetitionData = () => {
       //get values from inputs
@@ -140,6 +145,7 @@
       countryCodesArray = countryCodesArray.map((cc) => cc.trim());
       console.log("values choosen: ", [inputValue], countryCodesArray);
       const competitionIdArray = [inputValue];
+      const apiCalls = [];
 
       const tbodyRef = document
         .getElementById("sponsor-table")
@@ -156,7 +162,7 @@
             .replace("{countryCode}", countryCode);
           console.log(url);
 
-          fetch(url)
+          const apiCall = fetch(url)
             .then((response) => response.json())
             .then((sponsors) => {
               sponsors.forEach((sponsor) => {
@@ -205,8 +211,54 @@
                 }
               });
             });
+          apiCalls.push(apiCall);
         });
       });
+      //and when all the api calls are done...
+      Promise.all(apiCalls).then(() => {
+        console.log(`All urls were fetched`);
+        //order table on mainSponsor
+        const thToOrderBy = document.getElementById("indexTable");
+        orderTable(thToOrderBy);
+      });
     };
+
+    const getCellValue = (tr, idx) =>
+      tr.children[idx].innerText || tr.children[idx].textContent;
+
+    /*
+      comparer function for values in the index column
+    */
+    const comparer = (idx, asc) => (a, b) =>
+      ((v1, v2) =>
+        v1 !== "" && v2 !== "" && !isNaN(v1) && !isNaN(v2)
+          ? v1 - v2
+          : v1.toString().localeCompare(v2))(
+        getCellValue(asc ? a : b, idx),
+        getCellValue(asc ? b : a, idx)
+      );
+
+    /*
+      function to order the table based on content of the column 
+    */
+    const orderTable = (th) => {
+      const table = th.closest("table");
+      const tbody = table.querySelector("tbody");
+      Array.from(tbody.querySelectorAll("tr"))
+        .sort(
+          comparer(
+            Array.from(th.parentNode.children).indexOf(th),
+            (this.asc = !this.asc)
+          )
+        )
+        .forEach((tr) => tbody.appendChild(tr));
+    };
+
+    // set listener on th click to order by this parameter
+    document.querySelectorAll("th").forEach((th) =>
+      th.addEventListener("click", () => {
+        orderTable(th);
+      })
+    );
   </script>
 </html>
