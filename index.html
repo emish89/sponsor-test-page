@@ -19,6 +19,71 @@
       th {
         cursor: pointer;
       }
+
+      /* Center the loader */
+      #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 120px;
+        margin: -76px 0 0 -76px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Add animation to "page content" */
+      .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 1s;
+      }
+
+      @-webkit-keyframes animatebottom {
+        from {
+          bottom: -100px;
+          opacity: 0;
+        }
+        to {
+          bottom: 0px;
+          opacity: 1;
+        }
+      }
+
+      @keyframes animatebottom {
+        from {
+          bottom: -100px;
+          opacity: 0;
+        }
+        to {
+          bottom: 0;
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
@@ -50,17 +115,16 @@
       id="countryCodes"
       name="countryCodes"
       placeholder="Country Codes - separated by commas"
-      value="GB,FR,ES,IT,CN,DE,RU"
+      value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA"
     />
 
     <button onclick="getCompetitionData()">Get competition Data</button>
 
     <a href="country-codes.csv">Download country codes list</a>
 
-    <table id="sponsor-table">
-      <caption>
-        Table with the result of the sponsors service api
-      </caption>
+    <div id="loader"></div>
+
+    <table id="sponsor-table" aria-describedby="sponsor-api-response">
       <thead>
         <th scope="col">language</th>
         <th scope="col">code</th>
@@ -79,7 +143,7 @@
   </body>
   <script>
     const arrayResponseHashes = [];
-
+    document.getElementById("loader").style.display = "none";
     /*
       super simple hashing function
     */
@@ -137,12 +201,15 @@
       onclick button handler
     */
     const getCompetitionData = () => {
+      document.getElementById("loader").style.display = "block";
       //get values from inputs
       const inputValue = document.getElementById("competitionId").value;
       const inputCountryCodes = document.getElementById("countryCodes").value;
       const baseUrl = document.getElementById("baseUrl").value;
       let countryCodesArray = inputCountryCodes.split(",");
-      countryCodesArray = countryCodesArray.map((cc) => cc.trim());
+      countryCodesArray = countryCodesArray.map((cc) =>
+        cc.trim().toUpperCase()
+      );
       console.log("values choosen: ", [inputValue], countryCodesArray);
       const competitionIdArray = [inputValue];
       const apiCalls = [];
@@ -220,6 +287,7 @@
         //order table on mainSponsor
         const thToOrderBy = document.getElementById("indexTable");
         orderTable(thToOrderBy);
+        document.getElementById("loader").style.display = "none";
       });
     };
 
