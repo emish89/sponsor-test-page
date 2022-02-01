@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- PROD -->
+    <script
+      type="module"
+      src="https://panenka.uefa.com/panenka/panenka.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://panenka.uefa.com/scripts/esm-loader.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://panenka.uefa.com/panenka/panenka.css"
+    />
+
     <title>Sponsor page</title>
     <style>
       td,
@@ -19,131 +33,88 @@
       th {
         cursor: pointer;
       }
-
-      /* Center the loader */
-      #loader {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        z-index: 1;
-        width: 120px;
-        height: 120px;
-        margin: -76px 0 0 -76px;
-        border: 16px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 16px solid #3498db;
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-      }
-
-      @-webkit-keyframes spin {
-        0% {
-          -webkit-transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-        }
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* Add animation to "page content" */
-      .animate-bottom {
-        position: relative;
-        -webkit-animation-name: animatebottom;
-        -webkit-animation-duration: 1s;
-        animation-name: animatebottom;
-        animation-duration: 1s;
-      }
-
-      @-webkit-keyframes animatebottom {
-        from {
-          bottom: -100px;
-          opacity: 0;
-        }
-        to {
-          bottom: 0px;
-          opacity: 1;
-        }
-      }
-
-      @keyframes animatebottom {
-        from {
-          bottom: -100px;
-          opacity: 0;
-        }
-        to {
-          bottom: 0;
-          opacity: 1;
-        }
-      }
     </style>
   </head>
   <body>
-    <h1>Sponsor TEST page</h1>
-    <label for="baseUrl">Choose ENV:</label>
+    <div class="pk-root" pk-competition="default" pk-theme="light">
+      <h1>Sponsor TEST page</h1>
+      <label for="baseUrl">Choose ENV:</label>
 
-    <select name="baseUrl" id="baseUrl">
-      <option
-        value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+      <select name="baseUrl" id="baseUrl">
+        <option
+          value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+        >
+          PROD - need UEFA VPN
+        </option>
+        <option
+          value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+        >
+          INT
+        </option>
+      </select>
+
+      <input
+        type="number"
+        id="competitionId"
+        name="competitionId"
+        placeholder="Competition ID"
+      />
+
+      <input
+        type="text"
+        id="countryCodes"
+        name="countryCodes"
+        placeholder="Country Codes - separated by commas"
+        value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA"
+      />
+
+      <pk-button
+        aria-label="button"
+        appearance="contained"
+        type="button"
+        width="200"
+        high-contrast="false"
+        id="get-competition-button"
       >
-        PROD - need UEFA VPN
-      </option>
-      <option
-        value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+        Get competition Data
+      </pk-button>
+
+      <pk-button
+        aria-label="button"
+        appearance="text"
+        form-id=""
+        link-button=""
+        link-href="https://raw.githubusercontent.com/UEFADigital/fsp-sponsor-service/master/src/main/resources/countries.csv?token=GHSAT0AAAAAABL3TMCZJCSUYQW4EK2EAPVAYP5NVZA"
+        link-rel="noopener"
+        link-target="_blank"
+        type="button"
+        width=""
+        high-contrast="false"
+        class=""
       >
-        INT
-      </option>
-    </select>
+        Open country codes list
+        <pk-icon name="navigation-chevron-right" class="pk-ml--8"></pk-icon>
+      </pk-button>
 
-    <input
-      type="number"
-      id="competitionId"
-      name="competitionId"
-      placeholder="Competition ID"
-    />
+      <pk-spinner id="loader"></pk-spinner>
 
-    <input
-      type="text"
-      id="countryCodes"
-      name="countryCodes"
-      placeholder="Country Codes - separated by commas"
-      value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA"
-    />
-
-    <button onclick="getCompetitionData()">Get competition Data</button>
-
-    <a
-      target="”_blank”"
-      href="https://raw.githubusercontent.com/UEFADigital/fsp-sponsor-service/master/src/main/resources/countries.csv?token=GHSAT0AAAAAABL3TMCZJCSUYQW4EK2EAPVAYP5NVZA"
-      >Open country codes list</a
-    >
-
-    <div id="loader"></div>
-
-    <table id="sponsor-table" aria-describedby="sponsor-api-response">
-      <thead>
-        <th scope="col">language</th>
-        <th scope="col">code</th>
-        <th scope="col">colour</th>
-        <th scope="col">secondaryColour</th>
-        <th scope="col">image</th>
-        <th scope="col">introText</th>
-        <th scope="col">links</th>
-        <th id="indexTable" scope="col">mainSponsor</th>
-        <th scope="col">name</th>
-        <th scope="col">tags</th>
-        <th scope="col">type</th>
-      </thead>
-      <tbody></tbody>
-    </table>
+      <table id="sponsor-table" aria-describedby="sponsor-api-response">
+        <thead>
+          <th scope="col">language</th>
+          <th scope="col">code</th>
+          <th scope="col">colour</th>
+          <th scope="col">secondaryColour</th>
+          <th scope="col">image</th>
+          <th scope="col">introText</th>
+          <th scope="col">links</th>
+          <th id="indexTable" scope="col">mainSponsor</th>
+          <th scope="col">name</th>
+          <th scope="col">tags</th>
+          <th scope="col">type</th>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </body>
   <script>
     const arrayResponseHashes = [];
@@ -211,11 +182,24 @@
       const inputCountryCodes = document.getElementById("countryCodes").value;
       const baseUrl = document.getElementById("baseUrl").value;
       let countryCodesArray = inputCountryCodes.split(",");
-      countryCodesArray = countryCodesArray.map((cc) =>
-        cc.trim().toUpperCase()
-      );
-      console.log("values choosen: ", [inputValue], countryCodesArray);
-      const competitionIdArray = [inputValue];
+      const competitionIdArray = [inputValue].filter(Boolean);
+
+      countryCodesArray = countryCodesArray
+        .map((cc) => cc.trim().toUpperCase())
+        .filter(Boolean);
+      console.log("values choosen: ", competitionIdArray, countryCodesArray);
+      if (competitionIdArray.length === 0) {
+        alert("Please enter competition ID");
+        document.getElementById("loader").style.display = "none";
+
+        return;
+      }
+      if (countryCodesArray.length === 0) {
+        alert("Please enter country codes");
+        document.getElementById("loader").style.display = "none";
+
+        return;
+      }
       const apiCalls = [];
 
       const tbodyRef = document
@@ -332,5 +316,9 @@
         orderTable(th);
       })
     );
+
+    document
+      .getElementById("get-competition-button")
+      .addEventListener("click", getCompetitionData);
   </script>
 </html>
