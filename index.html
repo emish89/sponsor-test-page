@@ -36,84 +36,122 @@
     </style>
   </head>
   <body>
-    <div class="pk-root" pk-competition="default" pk-theme="light">
-      <h1>Sponsor TEST page</h1>
-      <label for="baseUrl">Choose ENV:</label>
-
-      <select name="baseUrl" id="baseUrl">
-        <option
-          value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
-        >
-          PROD - need UEFA VPN
-        </option>
-        <option
-          value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
-        >
-          INT
-        </option>
-      </select>
-
-      <input
-        type="number"
-        id="competitionId"
-        name="competitionId"
-        placeholder="Competition ID"
-      />
-
-      <input
-        type="text"
-        id="countryCodes"
-        name="countryCodes"
-        placeholder="Country Codes - separated by commas"
-        value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA"
-      />
-
-      <pk-button
-        aria-label="button"
-        appearance="contained"
-        type="button"
-        width="200"
-        high-contrast="false"
-        id="get-competition-button"
+    <div class="pk-root" pk-competition="default" pk-theme="dark">
+      <pk-simple-header
+        bg-color="primary-01"
+        bg-img=""
+        icon-color="ui-06"
+        icon-size="24"
+        close-href=""
+        title-color="text-04"
+        class="hydrated"
+        height="60"
+        width="100%"
+        text="Sponsor TEST page"
+        content-max-width="100%"
+        style="
+          --pk-simple-header--bg-color: var(--pk-primary-01);
+          --pk-simple-header--title-color: var(--pk-text-04);
+          --pk-simple-header--height: 60px;
+          --pk-simple-header--width: 100%;
+          --pk-simple-header--content-max-width: 100%;
+        "
+        disable-close=""
       >
-        Get competition Data
-      </pk-button>
+      </pk-simple-header>
 
-      <pk-button
-        aria-label="button"
-        appearance="text"
-        form-id=""
-        link-button=""
-        link-href="https://raw.githubusercontent.com/UEFADigital/fsp-sponsor-service/master/src/main/resources/countries.csv?token=GHSAT0AAAAAABL3TMCZJCSUYQW4EK2EAPVAYP5NVZA"
-        link-rel="noopener"
-        link-target="_blank"
-        type="button"
-        width=""
-        high-contrast="false"
-        class=""
-      >
-        Open country codes list
-        <pk-icon name="navigation-chevron-right" class="pk-ml--8"></pk-icon>
-      </pk-button>
+      <div class="pk-container">
+        <div class="pk-row pk-align-items--center">
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
+            <label for="baseUrl">ENV:</label>
 
-      <pk-spinner id="loader"></pk-spinner>
+            <select name="baseUrl" id="baseUrl">
+              <option
+                value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+              >
+                PROD - need UEFA VPN
+              </option>
+              <option
+                value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+              >
+                INT
+              </option>
+            </select>
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
+            <input
+              type="number"
+              id="competitionId"
+              name="competitionId"
+              placeholder="Competition ID"
+            />
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
+            <input
+              type="text"
+              id="countryCodes"
+              name="countryCodes"
+              placeholder="Country Codes - separated by commas"
+              value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA"
+            />
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
+            <pk-button
+              aria-label="button"
+              appearance="contained"
+              type="button"
+              width="200"
+              high-contrast="false"
+              id="get-competition-button"
+            >
+              Get competition Data
+            </pk-button>
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
+            <pk-button
+              aria-label="button"
+              appearance="text"
+              form-id=""
+              link-button=""
+              link-href="https://raw.githubusercontent.com/UEFADigital/fsp-sponsor-service/master/src/main/resources/countries.csv?token=GHSAT0AAAAAABL3TMCZJCSUYQW4EK2EAPVAYP5NVZA"
+              link-rel="noopener"
+              link-target="_blank"
+              type="button"
+              width=""
+              high-contrast="false"
+              class=""
+            >
+              Open country codes list
+              <pk-icon
+                name="navigation-chevron-right"
+                class="pk-ml--8"
+              ></pk-icon>
+            </pk-button>
+          </div>
+        </div>
 
-      <table id="sponsor-table" aria-describedby="sponsor-api-response">
-        <thead>
-          <th scope="col">language</th>
-          <th scope="col">code</th>
-          <th scope="col">colour</th>
-          <th scope="col">secondaryColour</th>
-          <th scope="col">image</th>
-          <th scope="col">introText</th>
-          <th scope="col">links</th>
-          <th id="indexTable" scope="col">mainSponsor</th>
-          <th scope="col">name</th>
-          <th scope="col">tags</th>
-          <th scope="col">type</th>
-        </thead>
-        <tbody></tbody>
-      </table>
+        <div class="pk-row pk-justify-content--center">
+          <pk-spinner size="200" id="loader"></pk-spinner>
+        </div>
+        <div class="pk-row">
+          <table id="sponsor-table" aria-describedby="sponsor-api-response">
+            <thead>
+              <th scope="col">language</th>
+              <th scope="col">code</th>
+              <th scope="col">colour</th>
+              <th scope="col">secondaryColour</th>
+              <th scope="col">image</th>
+              <th scope="col">introText</th>
+              <th scope="col">links</th>
+              <th id="indexTable" scope="col">mainSponsor</th>
+              <th scope="col">name</th>
+              <th scope="col">tags</th>
+              <th scope="col">type</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </body>
   <script>
