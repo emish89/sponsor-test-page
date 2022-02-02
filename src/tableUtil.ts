@@ -1,19 +1,12 @@
-const makePkCell = (
-  columnKey: string,
-  colour: string,
-  bgColor: string,
-  appendItems: Node,
-) => {
+const makePkCell = (columnKey: string, appendItems: Node) => {
   const newItem = document.createElement('pk-table-cell');
   newItem.setAttribute('column-key', columnKey);
-  newItem.classList.add('pk-text--wrap');
+  newItem.classList.add('pk-text--wrap', 'pk-text--break');
   newItem.appendChild(appendItems);
-  newItem.style.backgroundColor = bgColor;
-  newItem.style.color = colour;
   return newItem;
 };
 /*
-  print column from values
+print column from values
 */
 export const printColumn = (
   newRow: HTMLElement,
@@ -22,12 +15,15 @@ export const printColumn = (
   bgColor = 'white',
   color = 'black',
 ) => {
-  const pkIdentifier = document.createElement('pk-identifier');  
+  const pkIdentifier = document.createElement('pk-identifier');
   const pkId = document.createElement('span');
   pkId.setAttribute('slot', 'primary');
-  pkId.textContent = propValue;  
-  pkIdentifier.appendChild(pkId);  
-  newRow.appendChild(makePkCell(columnKey, color, bgColor, pkIdentifier));
+  pkId.classList.add('pk-text--wrap', 'pk-text--break');
+  pkId.textContent = propValue;
+  pkIdentifier.appendChild(pkId);
+  newRow.appendChild(makePkCell(columnKey, pkIdentifier));
+  pkIdentifier.style.setProperty('--pk-identifier-primary--color', color);
+  pkIdentifier.style.setProperty('--pk-identifier--bg-color', bgColor);
 };
 
 /**
@@ -45,6 +41,9 @@ export const printColumnList = (
     const li = document.createElement('pk-list-item');
     li.setAttribute('has-divider', 'true');
     const pkIdentifier = document.createElement('pk-identifier');
+    pkIdentifier.style.setProperty('--pk-identifier-primary--color', 'black');
+    pkIdentifier.style.setProperty('--pk-identifier--bg-color', 'white');
+
     const prefix = document.createElement('span');
     prefix.setAttribute('slot', 'prefix');
     prefix.textContent = key;
@@ -57,7 +56,7 @@ export const printColumnList = (
     header.appendChild(li);
   }
   ul.appendChild(header);
-  newRow.appendChild(makePkCell(columnKey, 'black', 'white', ul));
+  newRow.appendChild(makePkCell(columnKey, ul));
 };
 
 /**
