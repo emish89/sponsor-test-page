@@ -1,8 +1,6 @@
 import { printColourColumns, printColumn, printColumnList } from './tableUtil';
 import { hashCode, Sponsor } from './util';
 
-const arrayResponseHashes = [];
-
 const extractInputData = () => {
   //get values from inputs
   const inputValue =
@@ -23,55 +21,71 @@ const extractInputData = () => {
   };
 };
 
-const mapSponsors = (sponsors: Sponsor[], countryCode: string) => {
-  const newRows: Node[] = [];
+const arrayResponseHashes: { [key: string]: Sponsor } = {};
+
+const clearPreviousHashedItems = () =>
+  Object.keys(arrayResponseHashes).forEach(
+    (k) => delete arrayResponseHashes[k],
+  );
+
+const extractSponsorItems = (sponsors: Sponsor[], countryCode: string) => {
   sponsors.forEach((sponsor: Sponsor) => {
-    // check if hash is in the array, otherwise add a new language row
+    // check if hash is in the array, otherwise add a new sponsor
     const respHash = hashCode(JSON.stringify(sponsor));
-    if (!arrayResponseHashes.includes(respHash)) {
-      arrayResponseHashes.push(respHash);
+    if (!arrayResponseHashes[respHash]) {
       sponsor.language = countryCode;
-
-      const newRow = document.createElement('pk-table-row');
-      newRow.id = sponsor.code;
-
-      // Insert a cell at the end of the row
-      printColumn(newRow, sponsor.language, 'language');
-      printColumn(newRow, sponsor.code, 'code');
-
-      printColourColumns(newRow, sponsor.colour, sponsor.secondaryColour);
-
-      // image cell
-      const image = document.createElement('pk-table-cell');
-      var img = document.createElement('img');
-      img.src = sponsor.image;
-      image.appendChild(img);
-      image.setAttribute('column-key', 'image');
-      image.style.backgroundColor = 'white';
-      image.style.color = 'black';
-      newRow.appendChild(image);
-
-      printColumnList(newRow, 'introText', sponsor.introText.translations);
-      printColumnList(newRow, 'links', sponsor.links);
-
-      printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
-      printColumn(newRow, sponsor.name, 'name');
-
-      printColumn(newRow, sponsor.tags.join(' | '), 'tags');
-      printColumn(newRow, sponsor.type, 'type');
-      newRows.push(newRow);
-    }
-
-    // I find the existing row with the sponsor and I add the language to the column
-    const existingRow = document.getElementById(sponsor.code);
-    if (existingRow) {
-      let value = existingRow.getElementsByTagName('pk-table-cell')[0];
-      value.innerHTML = `${value}, ${countryCode}`;
+      arrayResponseHashes[respHash] = sponsor;
+    } else {
+      // I find the existing sponsor and I add the language to the codes
+      const existingRow = arrayResponseHashes[respHash];
+      existingRow.language += `, ${countryCode}`;
     }
   });
-  return newRows;
 };
 
+const mapSponsor = (sponsor: Sponsor) => {
+  const newRow = document.createElement('pk-table-row');
+  newRow.id = sponsor.code;
+
+  // Insert a cell at the end of the row
+  printColumn(newRow, sponsor.language, 'language');
+  printColumn(newRow, sponsor.code, 'code');
+
+  printColourColumns(newRow, sponsor.colour, sponsor.secondaryColour);
+
+  // image cell
+  const image = document.createElement('pk-table-cell');
+  var img = document.createElement('img');
+  img.src = sponsor.image;
+  image.appendChild(img);
+  image.setAttribute('column-key', 'image');
+  image.style.backgroundColor = 'white';
+  image.style.color = 'black';
+  newRow.appendChild(image);
+
+  printColumnList(newRow, 'introText', sponsor.introText.translations);
+  printColumnList(newRow, 'links', sponsor.links);
+
+  printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
+  printColumn(newRow, sponsor.name, 'name');
+
+  printColumn(newRow, sponsor.tags.join(' | '), 'tags');
+  printColumn(newRow, sponsor.type, 'type');
+
+  return newRow;
+};
+
+const generateTableBody = (sponsors: Sponsor[]) => {
+  const tbodyRef = document
+    .getElementById('sponsor-table')
+    .getElementsByTagName('pk-table-body')[0];
+  //cleanup old table
+  tbodyRef.innerHTML = '';
+
+  Object.values(arrayResponseHashes).forEach((sp) =>
+    tbodyRef.appendChild(mapSponsor(sp)),
+  );
+};
 /**
  * onclick button handler
  */
@@ -83,13 +97,7 @@ const getCompetitionData = () => {
   }
 
   const apiCalls = [];
-
-  const tbodyRef = document
-    .getElementById('sponsor-table')
-    .getElementsByTagName('pk-table-body')[0];
-  //cleanup old table
-  tbodyRef.innerHTML = '';
-  arrayResponseHashes.length = 0;
+  clearPreviousHashedItems();
 
   //loop through comp and countries
   cups.forEach((competitionId) => {
@@ -101,8 +109,7 @@ const getCompetitionData = () => {
       const apiCall = fetch(url)
         .then((response) => response.json() as Promise<Sponsor[]>)
         .then((sponsors) => {
-          const rows = mapSponsors(sponsors, countryCode);
-          rows.forEach((r) => tbodyRef.appendChild(r));
+          extractSponsorItems(sponsors, countryCode);
         });
       apiCalls.push(apiCall);
     });
@@ -110,11 +117,7 @@ const getCompetitionData = () => {
   // as soon as all the api calls are done...
   Promise.all(apiCalls).then(() => {
     console.info(`all your urls are belong to us`);
-
-    // enable table sorting
-    
-    // const thToOrderBy = document.getElementById("indexTable");
-    // orderTable(thToOrderBy);
+    generateTableBody(Object.values(arrayResponseHashes));    
   });
 };
 

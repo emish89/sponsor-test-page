@@ -6,6 +6,7 @@ const makePkCell = (
 ) => {
   const newItem = document.createElement('pk-table-cell');
   newItem.setAttribute('column-key', columnKey);
+  newItem.setAttribute('sortable', 'true')
   newItem.appendChild(appendItems);
   newItem.style.backgroundColor = bgColor;
   newItem.style.color = colour;
@@ -57,7 +58,7 @@ export const printColourColumns = (
   colour: string,
   secondaryColour: string,
 ) => {
-  printColumn(newRow, colour, 'colour', secondaryColour, colour);
+  printColumn(newRow, colour, 'colour', colour, secondaryColour);
   printColumn(
     newRow,
     secondaryColour,
