@@ -1,0 +1,26 @@
+{
+  "name": "fsp-sponsors-tool-comparer",
+  "version": "1.0.0",
+  "description": "Test page of the FSP sponsor service",
+  "source": "src/index.html",
+  "scripts": {
+    "build": "rimraf dist/ && parcel",
+    "deploy": "rimraf dist/ && parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emish89/sponsor-test-page.git"
+  },
+  "author": "https://github.com/emish89",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emish89/sponsor-test-page/issues"
+  },
+  "homepage": "https://github.com/emish89/sponsor-test-page#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.2.1",
+    "parcel": "^2.2.1",
+    "rimraf": "^3.0.2"
+  }
+}
