@@ -69,7 +69,11 @@ const mapSponsor = (sponsor: Sponsor) => {
   printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
   printColumn(newRow, sponsor.name, 'name');
 
-  printColumn(newRow, sponsor.tags.join(' | '), 'tags');
+  const tagItems = sponsor.tags.reduce(
+    (now, tg, i) => Object.assign(now, { [i]: tg }),
+    {},
+  );
+  printColumnList(newRow, 'tags', tagItems);
   printColumn(newRow, sponsor.type, 'type');
 
   return newRow;
@@ -82,9 +86,7 @@ const generateTableBody = (sponsors: Sponsor[]) => {
   //cleanup old table
   tbodyRef.innerHTML = '';
 
-  Object.values(arrayResponseHashes).forEach((sp) =>
-    tbodyRef.appendChild(mapSponsor(sp)),
-  );
+  sponsors.forEach((sp) => tbodyRef.appendChild(mapSponsor(sp)));
 };
 /**
  * onclick button handler
@@ -117,14 +119,46 @@ const getCompetitionData = () => {
   // as soon as all the api calls are done...
   Promise.all(apiCalls).then(() => {
     console.info(`all your urls are belong to us`);
-    generateTableBody(Object.values(arrayResponseHashes));    
+    generateTableBody(Object.values(arrayResponseHashes));
   });
+};
+
+function compareValues(key: string, order = 'ASC') {
+  return function innerSort(a: Sponsor, b: Sponsor) {
+    if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+      // property doesn't exist on either object
+      return 0;
+    }
+
+    const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
+    const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
+
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return order === 'DESC' ? comparison * -1 : comparison;
+  };
+}
+
+const sortTableBy = (event: CustomEvent) => {
+  const tableElement = document.querySelector<HTMLElement>('pk-table');
+  const tableBodyElement =
+    tableElement.querySelector<HTMLElement>('pk-table-body');
+  tableBodyElement.style.height = `${tableBodyElement.offsetHeight}px`;
+  const sortSponsors = Object.values(arrayResponseHashes).sort(
+    compareValues(event.detail.columnKey, event.detail.order),
+  );
+  generateTableBody(sortSponsors);
 };
 
 /** listeners setup section */
 document
   .getElementById('get-competition-button')
   .addEventListener('click', getCompetitionData);
+document.addEventListener('pkTableSortBy', sortTableBy);
 
 /**
  * WIP

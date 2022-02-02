@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="css/main.scss" />
   </head>
 
-  <body style="background-color: #9c9c9c;">
-    <div class="pk-root" pk-competition="ucl" pk-theme="dark">
+  <body>
+    <div class="pk-root" pk-competition="ucl" pk-theme="light">
       <pk-simple-header bg-color="primary-01" bg-img="" icon-color="ui-06"
         icon-size="24" close-href="" title-color="text-04" class="hydrated"
         height="60" width="100%" text="Sponsor TEST page"
@@ -73,9 +73,10 @@
           <pk-table table-id="sponsor-table" id="sponsor-table" loading
             aria-describedby="sponsor-api-response" cell-vertical-pad="24">
             <pk-table-header>
-              <pk-table-header-col column-key="language">language
+              <pk-table-header-col column-key="language" sortable>language
               </pk-table-header-col>
-              <pk-table-header-col column-key="code">code</pk-table-header-col>
+              <pk-table-header-col column-key="code" sortable>code
+              </pk-table-header-col>
               <pk-table-header-col column-key="colour">colour
               </pk-table-header-col>
               <pk-table-header-col column-key="secondaryColour">secondaryColour
@@ -86,11 +87,15 @@
               </pk-table-header-col>
               <pk-table-header-col column-key="links">links
               </pk-table-header-col>
-              <pk-table-header-col id="indexTable" column-key="mainSponsor">
+              <pk-table-header-col id="indexTable" column-key="mainSponsor"
+                sortable>
                 mainSponsor</pk-table-header-col>
-              <pk-table-header-col column-key="name">name</pk-table-header-col>
-              <pk-table-header-col column-key="tags">tags</pk-table-header-col>
-              <pk-table-header-col column-key="type">type</pk-table-header-col>
+              <pk-table-header-col column-key="name" sortable>name
+              </pk-table-header-col>
+              <pk-table-header-col column-key="tags" sortable>tags
+              </pk-table-header-col>
+              <pk-table-header-col column-key="type" sortable>type
+              </pk-table-header-col>
             </pk-table-header>
             <pk-table-body>
             </pk-table-body>
