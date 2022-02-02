@@ -1,3 +1,7 @@
+node_modules/
+.parcel-cache/
+dist/
+
 # Compiled source #
 ###################
 *.com
