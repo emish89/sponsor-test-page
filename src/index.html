@@ -42,10 +42,12 @@
             </select>
           </div>
           <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
+            <!-- WIP - replace with dropdown -->
             <input type="number" id="competitionId" name="competitionId"
               placeholder="Competition ID" />
           </div>
           <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
+            <!-- WIP replace with multi-select dropdown -->
             <input type="text" id="countryCodes" name="countryCodes"
               placeholder="Country Codes - separated by commas"
               value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA" />
@@ -72,7 +74,7 @@
         <div class="pk-row">
           <pk-table table-id="sponsor-table" id="sponsor-table" loading
             aria-describedby="sponsor-api-response" cell-vertical-pad="24">
-            <pk-table-header>
+            <pk-table-header center>
               <pk-table-header-col column-key="language" sortable>language
               </pk-table-header-col>
               <pk-table-header-col column-key="code" sortable>code
@@ -92,7 +94,7 @@
                 mainSponsor</pk-table-header-col>
               <pk-table-header-col column-key="name" sortable>name
               </pk-table-header-col>
-              <pk-table-header-col column-key="tags" sortable>tags
+              <pk-table-header-col column-key="tags">tags
               </pk-table-header-col>
               <pk-table-header-col column-key="type" sortable>type
               </pk-table-header-col>

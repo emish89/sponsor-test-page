@@ -2,6 +2,7 @@ const makePkCell = (columnKey: string, appendItems: Node) => {
   const newItem = document.createElement('pk-table-cell');
   newItem.setAttribute('column-key', columnKey);
   newItem.classList.add('pk-text--wrap', 'pk-text--break');
+  newItem.style.setProperty('--pk-cell--justify-content', 'center');
   newItem.appendChild(appendItems);
   return newItem;
 };
