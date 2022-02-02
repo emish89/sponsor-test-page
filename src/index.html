@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Sponsor page</title>
+    <!-- PROD -->
+    <script type="module"
+      src="https://panenka.uefa.com/panenka/panenka.js"></script>
+    <link rel="stylesheet"
+      href="https://panenka.uefa.com/panenka/panenka.css" />
+    <link rel="stylesheet" href="css/main.scss" />
+  </head>
+
+  <body style="background-color: #9c9c9c;">
+    <div class="pk-root" pk-competition="ucl" pk-theme="dark">
+      <pk-simple-header bg-color="primary-01" bg-img="" icon-color="ui-06"
+        icon-size="24" close-href="" title-color="text-04" class="hydrated"
+        height="60" width="100%" text="Sponsor TEST page"
+        content-max-width="100%" style="
+          --pk-simple-header--bg-color: var(--pk-primary-01);
+          --pk-simple-header--title-color: var(--pk-text-04);
+          --pk-simple-header--height: 60px;
+          --pk-simple-header--width: 100%;
+          --pk-simple-header--content-max-width: 100%;
+        " disable-close="">
+      </pk-simple-header>
+
+      <div class="pk-container">
+        <div class="pk-row pk-align-items--center">
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
+            <label for="baseUrl">ENV:</label>
+
+            <select name="baseUrl" id="baseUrl">
+              <option
+                value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
+                PROD - need UEFA VPN
+              </option>
+              <option
+                value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
+                INT
+              </option>
+            </select>
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
+            <input type="number" id="competitionId" name="competitionId"
+              placeholder="Competition ID" />
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
+            <input type="text" id="countryCodes" name="countryCodes"
+              placeholder="Country Codes - separated by commas"
+              value="CN,CY,DE,EE,ES,FR,GB,IL,IS,IT,KZ,LT,LV,MC,MD,MO,NO,RU,SE,TR,UA" />
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
+            <pk-button aria-label="button" appearance="contained" type="button"
+              width="200" high-contrast="false" id="get-competition-button">
+              Get competition Data
+            </pk-button>
+          </div>
+          <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
+            <pk-button aria-label="button" appearance="text" form-id=""
+              link-button=""
+              link-href="https://raw.githubusercontent.com/UEFADigital/fsp-sponsor-service/master/src/main/resources/countries.csv?token=GHSAT0AAAAAABL3TMCZJCSUYQW4EK2EAPVAYP5NVZA"
+              link-rel="noopener" link-target="_blank" type="button" width=""
+              high-contrast="false" class="">
+              Open country codes list
+              <pk-icon name="navigation-chevron-right" class="pk-ml--8">
+              </pk-icon>
+            </pk-button>
+          </div>
+        </div>
+
+        <div class="pk-row">
+          <pk-table table-id="sponsor-table" id="sponsor-table" loading
+            aria-describedby="sponsor-api-response">
+            <pk-table-header>
+              <pk-table-header-col column-key="language">language
+              </pk-table-header-col>
+              <pk-table-header-col column-key="code">code</pk-table-header-col>
+              <pk-table-header-col column-key="colour">colour
+              </pk-table-header-col>
+              <pk-table-header-col column-key="secondaryColour">secondaryColour
+              </pk-table-header-col>
+              <pk-table-header-col column-key="image">image
+              </pk-table-header-col>
+              <pk-table-header-col column-key="introText">introText
+              </pk-table-header-col>
+              <pk-table-header-col column-key="links">links
+              </pk-table-header-col>
+              <pk-table-header-col id="indexTable" column-key="mainSponsor">
+                mainSponsor</pk-table-header-col>
+              <pk-table-header-col column-key="name">name</pk-table-header-col>
+              <pk-table-header-col column-key="tags">tags</pk-table-header-col>
+              <pk-table-header-col column-key="type">type</pk-table-header-col>
+            </pk-table-header>
+            <pk-table-body>
+            </pk-table-body>
+          </pk-table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="./main.ts"></script>
+
+</html>
