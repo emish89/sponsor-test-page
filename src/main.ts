@@ -1,25 +1,6 @@
-import { printColourColumns, printColumn, printColumnList } from './tableUtil';
-import { hashCode, Sponsor } from './util';
-
-const extractInputData = () => {
-  //get values from inputs
-  const inputValue =
-    document.querySelector<HTMLInputElement>('#competitionId').value;
-  const inputCountryCodes =
-    document.querySelector<HTMLInputElement>('#countryCodes').value;
-  const baseUrl = document.querySelector<HTMLInputElement>('#baseUrl').value;
-  let countryCodesArray = inputCountryCodes.split(',');
-  const competitionIdArray = [inputValue].filter(Boolean);
-
-  countryCodesArray = countryCodesArray
-    .map((cc) => cc.trim().toUpperCase())
-    .filter(Boolean);
-  return {
-    cupArray: competitionIdArray,
-    countries: countryCodesArray,
-    url: baseUrl,
-  };
-};
+import { extractInputData, updateCustomInput } from './selectorsUtil';
+import { generateTableBody, sortTableBy } from './tableUtil';
+import { fetchComps, hashCode, Sponsor } from './util';
 
 const arrayResponseHashes: { [key: string]: Sponsor } = {};
 
@@ -43,58 +24,13 @@ const extractSponsorItems = (sponsors: Sponsor[], countryCode: string) => {
   });
 };
 
-const mapSponsor = (sponsor: Sponsor) => {
-  const newRow = document.createElement('pk-table-row');
-  newRow.id = sponsor.code;
-
-  // Insert a cell at the end of the row
-  printColumn(newRow, sponsor.language, 'language');
-  printColumn(newRow, sponsor.code, 'code');
-
-  printColourColumns(newRow, sponsor.colour, sponsor.secondaryColour);
-
-  // image cell
-  const image = document.createElement('pk-table-cell');
-  var img = document.createElement('img');
-  img.src = sponsor.image;
-  image.appendChild(img);
-  image.setAttribute('column-key', 'image');
-  image.style.backgroundColor = 'white';
-  image.style.color = 'black';
-  newRow.appendChild(image);
-
-  printColumnList(newRow, 'introText', sponsor.introText.translations);
-  printColumnList(newRow, 'links', sponsor.links);
-
-  printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
-  printColumn(newRow, sponsor.name, 'name');
-
-  const tagItems = sponsor.tags.reduce(
-    (now, tg, i) => Object.assign(now, { [i]: tg }),
-    {},
-  );
-  printColumnList(newRow, 'tags', tagItems);
-  printColumn(newRow, sponsor.type, 'type');
-
-  return newRow;
-};
-
-const generateTableBody = (sponsors: Sponsor[]) => {
-  const tbodyRef = document
-    .getElementById('sponsor-table')
-    .getElementsByTagName('pk-table-body')[0];
-  //cleanup old table
-  tbodyRef.innerHTML = '';
-
-  sponsors.forEach((sp) => tbodyRef.appendChild(mapSponsor(sp)));
-};
 /**
  * onclick button handler
  */
 const getCompetitionData = () => {
   const { cupArray: cups, countries, url: baseEndpoint } = extractInputData();
-  if (!cups.length || !countries.length) {
-    alert('Please enter at least 1 country and the desidered cup');
+  if (!cups.length || !countries.length || !baseEndpoint) {
+    alert('Please select min. 1 country, the desidered cup and the endpoint host');
     return;
   }
 
@@ -123,39 +59,42 @@ const getCompetitionData = () => {
   });
 };
 
-function compareValues(key: string, order = 'ASC') {
-  return function innerSort(a: Sponsor, b: Sponsor) {
-    if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-      // property doesn't exist on either object
-      return 0;
-    }
-
-    const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
-    const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
-
-    let comparison = 0;
-    if (varA > varB) {
-      comparison = 1;
-    } else if (varA < varB) {
-      comparison = -1;
-    }
-    return order === 'DESC' ? comparison * -1 : comparison;
-  };
-}
-
-const sortTableBy = (event: CustomEvent) => {
-  const tableElement = document.querySelector<HTMLElement>('pk-table');
-  const tableBodyElement =
-    tableElement.querySelector<HTMLElement>('pk-table-body');
-  tableBodyElement.style.height = `${tableBodyElement.offsetHeight}px`;
-  const sortSponsors = Object.values(arrayResponseHashes).sort(
-    compareValues(event.detail.columnKey, event.detail.order),
-  );
-  generateTableBody(sortSponsors);
-};
-
 /** listeners setup section */
+const dropdownSelectors = ['#baseUrl', '#competitionId'];
+dropdownSelectors.forEach((selector) => {
+  document
+    .querySelector(selector)
+    .querySelector('pk-menu')
+    .addEventListener(
+      'pkSelect',
+      (event: CustomEvent<{ item: HTMLPkMenuItemElement }>) =>
+        updateCustomInput(event, selector),
+    );
+});
+
 document
   .getElementById('get-competition-button')
   .addEventListener('click', getCompetitionData);
-document.addEventListener('pkTableSortBy', sortTableBy);
+document.addEventListener('pkTableSortBy', (ev: CustomEvent) =>
+  sortTableBy(ev, arrayResponseHashes),
+);
+
+/**
+ * first load setup
+ */
+(async () => {
+  const comps = await fetchComps();
+  const dpComps = document
+    .querySelector<HTMLElement>('#competitionId')
+    .querySelector<HTMLPkMenuElement>('pk-menu');
+  comps
+    .sort((c, c1) =>
+      Number.parseInt(c.id, 10) > Number.parseInt(c1.id, 10) ? 1 : -1,
+    )
+    .forEach((cp) => {
+      const menuItem = document.createElement('pk-menu-item');
+      menuItem.value = cp.id;
+      menuItem.textContent = `${cp.id}: ${cp.translations.name.EN}`;
+      dpComps.appendChild(menuItem);
+    });
+})();

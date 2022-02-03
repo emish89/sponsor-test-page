@@ -5,7 +5,7 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
-    "typeRoots": ["./assets/types/", "./node_modules/@types/"]
+    "typeRoots": ["./assets/types/", "./node_modules/@types/", "./node_modules/@uefadigital/"]
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "wwwroot"]

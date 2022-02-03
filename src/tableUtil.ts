@@ -1,3 +1,5 @@
+import { compareValues, Sponsor } from './util';
+
 const makePkCell = (columnKey: string, appendItems: Node) => {
   const newItem = document.createElement('pk-table-cell');
   newItem.setAttribute('column-key', columnKey);
@@ -76,4 +78,75 @@ export const printColourColumns = (
     secondaryColour,
     colour,
   );
+};
+
+/**
+ * map sponsor to a PkTableRowItem
+ * @param sponsor
+ * @returns
+ */
+export const mapSponsor = (sponsor: Sponsor) => {
+  const newRow = document.createElement('pk-table-row');
+  newRow.id = sponsor.code;
+
+  // Insert a cell at the end of the row
+  printColumn(newRow, sponsor.language, 'language');
+  printColumn(newRow, sponsor.code, 'code');
+
+  printColourColumns(newRow, sponsor.colour, sponsor.secondaryColour);
+
+  // image cell
+  const image = document.createElement('pk-table-cell');
+  var img = document.createElement('img');
+  img.src = sponsor.image;
+  image.appendChild(img);
+  image.setAttribute('column-key', 'image');
+  image.style.backgroundColor = 'white';
+  image.style.color = 'black';
+  newRow.appendChild(image);
+
+  printColumnList(newRow, 'introText', sponsor.introText.translations);
+  printColumnList(newRow, 'links', sponsor.links);
+
+  printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
+  printColumn(newRow, sponsor.name, 'name');
+
+  const tagItems = sponsor.tags.reduce(
+    (now, tg, i) => Object.assign(now, { [i]: tg }),
+    {},
+  );
+  printColumnList(newRow, 'tags', tagItems);
+  printColumn(newRow, sponsor.type, 'type');
+
+  return newRow;
+};
+
+/**
+ * generate PkTableBody from array of sponsors
+ * @param sponsors
+ */
+export const generateTableBody = (sponsors: Sponsor[]) => {
+  const tbodyRef = document
+    .getElementById('sponsor-table')
+    .getElementsByTagName('pk-table-body')[0];
+  //cleanup old table
+  tbodyRef.innerHTML = '';
+
+  sponsors.forEach((sp) => tbodyRef.appendChild(mapSponsor(sp)));
+};
+
+/**
+ * sort PkTableBody
+ * @param event 
+ * @param items 
+ */
+export const sortTableBy = (event: CustomEvent, items: { [key: string]: Sponsor }) => {
+  const tableElement = document.querySelector<HTMLElement>('pk-table');
+  const tableBodyElement =
+    tableElement.querySelector<HTMLElement>('pk-table-body');
+  tableBodyElement.style.height = `${tableBodyElement.offsetHeight}px`;
+  const sortSponsors = Object.values(items).sort(
+    compareValues(event.detail.columnKey, event.detail.order),
+  );
+  generateTableBody(sortSponsors);
 };

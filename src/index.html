@@ -28,23 +28,53 @@
       <div class="pk-container">
         <div class="pk-row pk-align-items--center">
           <div class="pk-col pk-col--span-xs-4 pk-col--span-md-2">
-            <label for="baseUrl">ENV:</label>
-
-            <select name="baseUrl" id="baseUrl">
-              <option
-                value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
-                PROD - need UEFA VPN
-              </option>
-              <option
-                value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
-                INT
-              </option>
-            </select>
+            <pk-dropdown id="baseUrl">
+              <pk-button slot="trigger" class="adaptive-width hydrated"
+                appearance="contained" type="button">
+                environment
+                <pk-icon name="navigation-chevron-down"
+                  class="pk-ml--8 hydrated" role="img"></pk-icon>
+                <small id="baseUrlSelection"></small>
+              </pk-button>
+              <pk-menu class="hydrated">
+                <h4 slot="header">Use</h4>
+                <pk-menu-item class="hydrated"
+                  value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
+                  <pk-icon name="tab-bar-ucl-fantasy-active" color="primary-01"
+                    slot="prefix" role="img" class="hydrated"
+                    style="--pk-icon--color:var(--pk-primary-01);"></pk-icon>
+                  PROD
+                </pk-menu-item>
+                <pk-menu-item
+                  value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+                  class="hydrated">INT</pk-menu-item>
+                <span slot="footer">
+                  <pk-identifier bg-color="elevation-01" rounded="true"
+                    border-radius="spacing-l">
+                    <pk-icon name="tab-bar-ucl-fantasy-active"
+                      color="primary-01" slot="prefix" role="img"
+                      class="hydrated"
+                      style="--pk-icon--color:var(--pk-primary-01);"></pk-icon>
+                    <span slot="primary"> requires UEFA VPN</span>
+                  </pk-identifier>
+                </span>
+              </pk-menu>
+            </pk-dropdown>
           </div>
           <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
-            <!-- WIP - replace with dropdown -->
-            <input type="number" id="competitionId" name="competitionId"
-              placeholder="Competition ID" />
+            <pk-dropdown id="competitionId" name="competitionId"
+              panel-height="200px">
+              <pk-button slot="trigger" class="adaptive-width hydrated"
+                appearance="contained" type="button">
+                competition
+                <pk-icon name="navigation-chevron-down"
+                  class="pk-ml--8 hydrated" role="img"></pk-icon>
+                <small id="competitionIdSelection"></small>                
+              </pk-button>
+              <pk-menu class="hydrated" style="max-height: 200px;"></pk-menu>
+            </pk-dropdown>
+            <!-- <input type="number" id="competitionId" name="competitionId"
+              placeholder="Competition ID" /> -->
           </div>
           <div class="pk-col pk-col--span-xs-4 pk-col--span-md-3">
             <!-- WIP replace with multi-select dropdown -->
