@@ -34,8 +34,8 @@ export const hashCode = (input: string) => {
   return hash;
 };
 
-export function compareValues(key: string, order = 'ASC') {
-  return function innerSort(a: Sponsor, b: Sponsor) {
+export function compareValues<T>(key: string, order = 'ASC') {
+  return function innerSort(a: T, b: T) {
     if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
       // property doesn't exist on either object
       return 0;

@@ -1,4 +1,9 @@
-import { extractInputData, updateCustomInput } from './selectorsUtil';
+import {
+  createCountryCheckboxes,
+  extractInputData,
+  makeCountryChips,
+  updateCustomInput,
+} from './selectorsUtil';
 import { generateTableBody, sortTableBy } from './tableUtil';
 import { fetchComps, hashCode, Sponsor } from './util';
 
@@ -73,6 +78,8 @@ dropdownSelectors.forEach((selector) => {
         updateCustomInput(event, selector),
     );
 });
+createCountryCheckboxes();
+makeCountryChips();
 
 document
   .getElementById('get-competition-button')

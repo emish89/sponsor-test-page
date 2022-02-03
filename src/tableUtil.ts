@@ -3,7 +3,8 @@ import { compareValues, Sponsor } from './util';
 const makePkCell = (columnKey: string, appendItems: Node) => {
   const newItem = document.createElement('pk-table-cell');
   newItem.setAttribute('column-key', columnKey);
-  newItem.classList.add('pk-text--wrap', 'pk-text--break');
+  newItem.withDivider = true;
+  newItem.classList.add('pk-text--wrap', 'pk-text--break', 'pk-overflow--visible');
   newItem.style.setProperty('--pk-cell--justify-content', 'center');
   newItem.appendChild(appendItems);
   return newItem;
@@ -137,10 +138,13 @@ export const generateTableBody = (sponsors: Sponsor[]) => {
 
 /**
  * sort PkTableBody
- * @param event 
- * @param items 
+ * @param event
+ * @param items
  */
-export const sortTableBy = (event: CustomEvent, items: { [key: string]: Sponsor }) => {
+export const sortTableBy = (
+  event: CustomEvent,
+  items: { [key: string]: Sponsor },
+) => {
   const tableElement = document.querySelector<HTMLElement>('pk-table');
   const tableBodyElement =
     tableElement.querySelector<HTMLElement>('pk-table-body');
