@@ -16,7 +16,7 @@ export const updateCustomInput = (
     const baseUrl = document.querySelector(selectorID);
     baseUrl.setAttribute('pk-value', itemValue);
     const textSection = baseUrl.querySelector(`${selectorID}Selection`);
-    textSection.textContent = targetElement.textContent;
+    textSection.textContent = targetElement.getAttribute('printValue');
   }
 };
 

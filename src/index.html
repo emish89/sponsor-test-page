@@ -38,14 +38,14 @@
               </pk-button>
               <pk-menu class="hydrated">
                 <h4 slot="header">Use</h4>
-                <pk-menu-item class="hydrated"
+                <pk-menu-item class="hydrated" printValue="PRD"
                   value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
                   <pk-icon name="tab-bar-ucl-fantasy-active" color="primary-01"
                     slot="prefix" role="img" class="hydrated"
                     style="--pk-icon--color:var(--pk-primary-01);"></pk-icon>
-                  PROD
+                  PRODUCTION
                 </pk-menu-item>
-                <pk-menu-item
+                <pk-menu-item printValue="INT"
                   value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
                   class="hydrated">INT</pk-menu-item>
                 <span slot="footer">

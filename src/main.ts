@@ -30,7 +30,9 @@ const extractSponsorItems = (sponsors: Sponsor[], countryCode: string) => {
 const getCompetitionData = () => {
   const { cupArray: cups, countries, url: baseEndpoint } = extractInputData();
   if (!cups.length || !countries.length || !baseEndpoint) {
-    alert('Please select min. 1 country, the desidered cup and the endpoint host');
+    alert(
+      'Please select min. 1 country, the desidered cup and the endpoint host',
+    );
     return;
   }
 
@@ -94,6 +96,7 @@ document.addEventListener('pkTableSortBy', (ev: CustomEvent) =>
     .forEach((cp) => {
       const menuItem = document.createElement('pk-menu-item');
       menuItem.value = cp.id;
+      menuItem.setAttribute('printValue', `${cp.id}: ${cp.code}`);
       menuItem.textContent = `${cp.id}: ${cp.translations.name.EN}`;
       dpComps.appendChild(menuItem);
     });
