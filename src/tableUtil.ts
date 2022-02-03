@@ -1,14 +1,34 @@
 import { compareValues, Sponsor } from './util';
 
-const makePkCell = (columnKey: string, appendItems: Node) => {
+const makePkCells = (columnKey: string, appendItems: Node[]) => {
   const newItem = document.createElement('pk-table-cell');
   newItem.setAttribute('column-key', columnKey);
   newItem.withDivider = true;
-  newItem.classList.add('pk-text--wrap', 'pk-text--break', 'pk-overflow--visible');
+  newItem.classList.add('pk-text--wrap', 'pk-text--break');
   newItem.style.setProperty('--pk-cell--justify-content', 'center');
-  newItem.appendChild(appendItems);
+  appendItems.forEach((ap) => newItem.appendChild(ap));
   return newItem;
 };
+
+const makePkCell = (columnKey: string, appendItem: Node) => makePkCells(columnKey, [appendItem]);
+
+const createPkIdentifier = (propValue: string, bgColor = 'white', color = 'black', columnKey?: string) => {
+  const pkIdentifier = document.createElement('pk-identifier');
+  const pkId = document.createElement('span');
+  pkId.setAttribute('slot', 'primary');
+  pkId.classList.add('pk-text--wrap', 'pk-text--break');
+  pkId.textContent = propValue;
+  pkIdentifier.appendChild(pkId);
+  if (columnKey) {
+    const pkSec = document.createElement('span');
+    pkSec.setAttribute('slot', 'secondary');
+    pkIdentifier.appendChild(pkSec);
+  }
+  pkIdentifier.style.setProperty('--pk-identifier-primary--color', color);
+  pkIdentifier.style.setProperty('--pk-identifier--bg-color', bgColor);
+  return pkIdentifier;
+};
+
 /*
 print column from values
 */
@@ -19,25 +39,16 @@ export const printColumn = (
   bgColor = 'white',
   color = 'black',
 ) => {
-  const pkIdentifier = document.createElement('pk-identifier');
-  const pkId = document.createElement('span');
-  pkId.setAttribute('slot', 'primary');
-  pkId.classList.add('pk-text--wrap', 'pk-text--break');
-  pkId.textContent = propValue;
-  pkIdentifier.appendChild(pkId);
+  const pkIdentifier = createPkIdentifier(propValue, bgColor, color);
   newRow.appendChild(makePkCell(columnKey, pkIdentifier));
-  pkIdentifier.style.setProperty('--pk-identifier-primary--color', color);
-  pkIdentifier.style.setProperty('--pk-identifier--bg-color', bgColor);
 };
-
+export const printColumnItems = (newRow: HTMLElement, columnKey: string, pkIdentifiers: HTMLPkIdentifierElement[]) => {
+  newRow.appendChild(makePkCells(columnKey, pkIdentifiers));
+};
 /**
  * print column from list of values
  */
-export const printColumnList = (
-  newRow: HTMLElement,
-  columnKey: string,
-  propObj: { [key: string]: string },
-) => {
+export const printColumnList = (newRow: HTMLElement, columnKey: string, propObj: { [key: string]: string }) => {
   const ul = document.createElement('pk-data-card');
   const header = document.createElement('div');
   header.setAttribute('slot', 'body');
@@ -66,19 +77,9 @@ export const printColumnList = (
 /**
  * print columns for the 2 colors
  */
-export const printColourColumns = (
-  newRow: HTMLElement,
-  colour: string,
-  secondaryColour: string,
-) => {
+export const printColourColumns = (newRow: HTMLElement, colour: string, secondaryColour: string) => {
   printColumn(newRow, colour, 'colour', colour, secondaryColour);
-  printColumn(
-    newRow,
-    secondaryColour,
-    'secondaryColour',
-    secondaryColour,
-    colour,
-  );
+  printColumn(newRow, secondaryColour, 'secondaryColour', secondaryColour, colour);
 };
 
 /**
@@ -112,10 +113,7 @@ export const mapSponsor = (sponsor: Sponsor) => {
   printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
   printColumn(newRow, sponsor.name, 'name');
 
-  const tagItems = sponsor.tags.reduce(
-    (now, tg, i) => Object.assign(now, { [i]: tg }),
-    {},
-  );
+  const tagItems = sponsor.tags.reduce((now, tg, i) => Object.assign(now, { [i]: tg }), {});
   printColumnList(newRow, 'tags', tagItems);
   printColumn(newRow, sponsor.type, 'type');
 
@@ -127,12 +125,10 @@ export const mapSponsor = (sponsor: Sponsor) => {
  * @param sponsors
  */
 export const generateTableBody = (sponsors: Sponsor[]) => {
-  const tbodyRef = document
-    .getElementById('sponsor-table')
-    .getElementsByTagName('pk-table-body')[0];
+  const tbodyRef = document.getElementById('sponsor-table').getElementsByTagName('pk-table-body')[0];
   //cleanup old table
   tbodyRef.innerHTML = '';
-
+  document.querySelector<HTMLElement>('#noContentFound').style.display = !sponsors.length ? 'hidden' : 'block';
   sponsors.forEach((sp) => tbodyRef.appendChild(mapSponsor(sp)));
 };
 
@@ -141,16 +137,10 @@ export const generateTableBody = (sponsors: Sponsor[]) => {
  * @param event
  * @param items
  */
-export const sortTableBy = (
-  event: CustomEvent,
-  items: { [key: string]: Sponsor },
-) => {
+export const sortTableBy = (event: CustomEvent, items: { [key: string]: Sponsor }) => {
   const tableElement = document.querySelector<HTMLElement>('pk-table');
-  const tableBodyElement =
-    tableElement.querySelector<HTMLElement>('pk-table-body');
+  const tableBodyElement = tableElement.querySelector<HTMLElement>('pk-table-body');
   tableBodyElement.style.height = `${tableBodyElement.offsetHeight}px`;
-  const sortSponsors = Object.values(items).sort(
-    compareValues(event.detail.columnKey, event.detail.order),
-  );
+  const sortSponsors = Object.values(items).sort(compareValues(event.detail.columnKey, event.detail.order));
   generateTableBody(sortSponsors);
 };

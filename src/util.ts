@@ -59,9 +59,7 @@ export function compareValues<T>(key: string, order = 'ASC') {
 export const fetchComps = async () => {
   const comps = window.localStorage.getItem('compList');
   if (!comps) {
-    const fetchComps = await fetch(
-      'https://comp.uefa.com/v2/competitions?regions=CONTINENTAL&regions=WORLDWIDE',
-    )
+    const fetchComps = await fetch('https://comp.uefa.com/v2/competitions?regions=CONTINENTAL&regions=WORLDWIDE')
       .then((resp) => resp.json() as Promise<Competition[]>)
       .then((data) => data);
     console.log(fetchComps);

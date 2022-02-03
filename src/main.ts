@@ -1,7 +1,8 @@
 import {
   createCountryCheckboxes,
   extractInputData,
-  makeCountryChips,
+  makeCountryAvatars,
+  toggleCheckboxes,
   updateCustomInput,
 } from './selectorsUtil';
 import { generateTableBody, sortTableBy } from './tableUtil';
@@ -9,10 +10,7 @@ import { fetchComps, hashCode, Sponsor } from './util';
 
 const arrayResponseHashes: { [key: string]: Sponsor } = {};
 
-const clearPreviousHashedItems = () =>
-  Object.keys(arrayResponseHashes).forEach(
-    (k) => delete arrayResponseHashes[k],
-  );
+const clearPreviousHashedItems = () => Object.keys(arrayResponseHashes).forEach((k) => delete arrayResponseHashes[k]);
 
 const extractSponsorItems = (sponsors: Sponsor[], countryCode: string) => {
   sponsors.forEach((sponsor: Sponsor) => {
@@ -35,9 +33,7 @@ const extractSponsorItems = (sponsors: Sponsor[], countryCode: string) => {
 const getCompetitionData = () => {
   const { cupArray: cups, countries, url: baseEndpoint } = extractInputData();
   if (!cups.length || !countries.length || !baseEndpoint) {
-    alert(
-      'Please select min. 1 country, the desidered cup and the endpoint host',
-    );
+    alert('Please select min. 1 country, the desidered cup and the endpoint host');
     return;
   }
 
@@ -47,9 +43,7 @@ const getCompetitionData = () => {
   //loop through comp and countries
   cups.forEach((competitionId) => {
     countries.forEach((countryCode) => {
-      const url = baseEndpoint
-        .replace('{competition}', competitionId)
-        .replace('{countryCode}', countryCode);
+      const url = baseEndpoint.replace('{competition}', competitionId).replace('{countryCode}', countryCode);
 
       const apiCall = fetch(url)
         .then((response) => response.json() as Promise<Sponsor[]>)
@@ -72,34 +66,27 @@ dropdownSelectors.forEach((selector) => {
   document
     .querySelector(selector)
     .querySelector('pk-menu')
-    .addEventListener(
-      'pkSelect',
-      (event: CustomEvent<{ item: HTMLPkMenuItemElement }>) =>
-        updateCustomInput(event, selector),
+    .addEventListener('pkSelect', (event: CustomEvent<{ item: HTMLPkMenuItemElement }>) =>
+      updateCustomInput(event, selector),
     );
 });
-createCountryCheckboxes();
-makeCountryChips();
 
-document
-  .getElementById('get-competition-button')
-  .addEventListener('click', getCompetitionData);
-document.addEventListener('pkTableSortBy', (ev: CustomEvent) =>
-  sortTableBy(ev, arrayResponseHashes),
-);
+createCountryCheckboxes();
+makeCountryAvatars();
+document.querySelector('#select-all-checkboxes').addEventListener('click', () => toggleCheckboxes(true));
+document.querySelector('#clear-all-checkboxes').addEventListener('click', () => toggleCheckboxes(false));
+
+document.getElementById('get-competition-button').addEventListener('click', getCompetitionData);
+document.addEventListener('pkTableSortBy', (ev: CustomEvent) => sortTableBy(ev, arrayResponseHashes));
 
 /**
  * first load setup
  */
 (async () => {
   const comps = await fetchComps();
-  const dpComps = document
-    .querySelector<HTMLElement>('#competitionId')
-    .querySelector<HTMLPkMenuElement>('pk-menu');
+  const dpComps = document.querySelector<HTMLElement>('#competitionId').querySelector<HTMLPkMenuElement>('pk-menu');
   comps
-    .sort((c, c1) =>
-      Number.parseInt(c.id, 10) > Number.parseInt(c1.id, 10) ? 1 : -1,
-    )
+    .sort((c, c1) => (Number.parseInt(c.id, 10) > Number.parseInt(c1.id, 10) ? 1 : -1))
     .forEach((cp) => {
       const menuItem = document.createElement('pk-menu-item');
       menuItem.value = cp.id;

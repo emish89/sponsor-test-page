@@ -1,37 +1,48 @@
 import { countryCodes, defaultSelectedCountries } from './data';
 import { compareValues } from './util';
 
+export const getCountryCheckboxes = () => {
+  const checkboxContainer = document.querySelector('#countryCheckboxes');
+  return checkboxContainer.querySelectorAll('pk-checkbox') as NodeListOf<HTMLPkCheckboxElement>;
+};
+
 function getCheckedCheckboxes() {
-  const activeCheckboxes = document.querySelectorAll(
-    'pk-checkbox',
-  ) as NodeListOf<HTMLPkCheckboxElement>;
+  const checkboxes = getCountryCheckboxes();
   const list: HTMLPkCheckboxElement[] = [];
-  activeCheckboxes.forEach((ac) => {
+  checkboxes.forEach((ac) => {
     if (ac.checked) list.push(ac);
   });
   return list;
 }
-export const makeCountryChips = () => {
+
+export const toggleCheckboxes = (check: boolean) => {
+  const checkboxes = getCountryCheckboxes();
+  checkboxes.forEach((cb) => (cb.checked = check));
+};
+
+export const makeCountryAvatars = () => {
   const pkChip = document.querySelector('#pk-codes-chips');
   pkChip.textContent = '';
   const activeCheckboxes = getCheckedCheckboxes();
-  activeCheckboxes.forEach((ac) => {
-    const chip = document.createElement('pk-chip');
-    chip.style.fontSize = 'var(--pk-font-size-xs2';
-    chip.style.border = '0.4px var(--pk-interaction) solid';
-    chip.style.borderRadius = '50%';
-    chip.style.margin = 'var(--pk-spacing-xxs)';
-    chip.style.padding = 'var(--pk-spacing-xxs)';
-    chip.textContent = ac.value;
+  const tooManyCheckboxes = activeCheckboxes.length > 40;
+  const stopPrinting = tooManyCheckboxes ? 40 : activeCheckboxes.length;
+  for (let index = 0; index < stopPrinting; index++) {
+    const ac = activeCheckboxes[index];
+    const chip = document.createElement('pk-avatar');
+    chip.type = 'image';
+    chip.size = 48;
+    chip.style.padding = 'var(--pk-spacing-xs2)';
+    chip.src = `http://purecatamphetamine.github.io/country-flag-icons/3x2/${ac.value}.svg`;
+    chip.title = ac.value;
     pkChip.appendChild(chip);
-  });
+  }
+  if (tooManyCheckboxes) pkChip.appendChild(document.createTextNode('...'));
 };
 
 const setupCheckboxEventListeners = () => {
-  const checkboxContainer = document.querySelector('#countryCheckboxes');
-  const checkboxes = checkboxContainer.querySelectorAll('pk-checkbox');
+  const checkboxes = getCountryCheckboxes();
   checkboxes.forEach((ck) => {
-    ck.addEventListener('checkboxChange', makeCountryChips);
+    ck.addEventListener('checkboxChange', makeCountryAvatars);
   });
 };
 
@@ -70,15 +81,11 @@ export const createCountryCheckboxes = () => {
   setupCheckboxEventListeners();
 };
 
-export const updateCustomInput = (
-  event: CustomEvent<{ item: HTMLPkMenuItemElement }>,
-  selectorID: string,
-) => {
+export const updateCustomInput = (event: CustomEvent<{ item: HTMLPkMenuItemElement }>, selectorID: string) => {
   const tE = event.target as HTMLElement;
   for (let i = 0; i < tE.children.length; i += 1) {
     const child = tE.children[i];
-    if (child.tagName.toLowerCase() === 'pk-menu-item')
-      tE.children[i].setAttribute('selected', 'false');
+    if (child.tagName.toLowerCase() === 'pk-menu-item') tE.children[i].setAttribute('selected', 'false');
   }
 
   const targetElement = event.detail.item;
@@ -94,18 +101,12 @@ export const updateCustomInput = (
 
 export const extractInputData = () => {
   //get values from inputs
-  const inputValue = document
-    .querySelector<HTMLInputElement>('#competitionId')
-    .getAttribute('pk-value');
+  const inputValue = document.querySelector<HTMLInputElement>('#competitionId').getAttribute('pk-value');
   const inputCountryCodes = getCheckedCheckboxes().map((p) => p.value);
-  const baseUrl = document
-    .querySelector<HTMLInputElement>('#baseUrl')
-    .getAttribute('pk-value');
+  const baseUrl = document.querySelector<HTMLInputElement>('#baseUrl').getAttribute('pk-value');
   const competitionIdArray = [inputValue].filter(Boolean);
 
-  const countryCodesArray = inputCountryCodes
-    .map((cc) => cc.trim().toUpperCase())
-    .filter(Boolean);
+  const countryCodesArray = inputCountryCodes.map((cc) => cc.trim().toUpperCase()).filter(Boolean);
   return {
     cupArray: competitionIdArray,
     countries: countryCodesArray,
