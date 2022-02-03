@@ -7,6 +7,7 @@ const makePkCells = (columnKey: string, appendItems: Node[]) => {
   newItem.classList.add('pk-text--wrap', 'pk-text--break');
   newItem.style.setProperty('--pk-cell--justify-content', 'center');
   appendItems.forEach((ap) => newItem.appendChild(ap));
+  if (appendItems.length > 1) newItem.classList.add('pk-flex--column');
   return newItem;
 };
 
@@ -22,8 +23,10 @@ const createPkIdentifier = (propValue: string, bgColor = 'white', color = 'black
   if (columnKey) {
     const pkSec = document.createElement('span');
     pkSec.setAttribute('slot', 'secondary');
+    pkSec.textContent = columnKey;
     pkIdentifier.appendChild(pkSec);
   }
+  pkIdentifier.alignment = 'center';
   pkIdentifier.style.setProperty('--pk-identifier-primary--color', color);
   pkIdentifier.style.setProperty('--pk-identifier--bg-color', bgColor);
   return pkIdentifier;
@@ -75,14 +78,6 @@ export const printColumnList = (newRow: HTMLElement, columnKey: string, propObj:
 };
 
 /**
- * print columns for the 2 colors
- */
-export const printColourColumns = (newRow: HTMLElement, colour: string, secondaryColour: string) => {
-  printColumn(newRow, colour, 'colour', colour, secondaryColour);
-  printColumn(newRow, secondaryColour, 'secondaryColour', secondaryColour, colour);
-};
-
-/**
  * map sponsor to a PkTableRowItem
  * @param sponsor
  * @returns
@@ -93,9 +88,16 @@ export const mapSponsor = (sponsor: Sponsor) => {
 
   // Insert a cell at the end of the row
   printColumn(newRow, sponsor.language, 'language');
-  printColumn(newRow, sponsor.code, 'code');
-
-  printColourColumns(newRow, sponsor.colour, sponsor.secondaryColour);
+  printColumnItems(newRow, 'info', [
+    createPkIdentifier(sponsor.code, '', '', 'code'),
+    createPkIdentifier(sponsor.name, '', '', 'name'),
+    createPkIdentifier(sponsor.mainSponsor, '', '', 'mainSponsor'),
+    createPkIdentifier(sponsor.type, '', '', 'type'),
+  ]);
+  printColumnItems(newRow, 'colors', [
+    createPkIdentifier(sponsor.colour, sponsor.colour, sponsor.secondaryColour, 'color'),
+    createPkIdentifier(sponsor.secondaryColour, sponsor.secondaryColour, sponsor.colour, 'secondary'),
+  ]);
 
   // image cell
   const image = document.createElement('pk-table-cell');
@@ -105,17 +107,14 @@ export const mapSponsor = (sponsor: Sponsor) => {
   image.setAttribute('column-key', 'image');
   image.style.backgroundColor = 'white';
   image.style.color = 'black';
-  newRow.appendChild(image);
+  const lastNode = newRow.children.item(newRow.children.length - 1);
+  lastNode.appendChild(image);
 
   printColumnList(newRow, 'introText', sponsor.introText.translations);
   printColumnList(newRow, 'links', sponsor.links);
 
-  printColumn(newRow, sponsor.mainSponsor, 'mainSponsor');
-  printColumn(newRow, sponsor.name, 'name');
-
   const tagItems = sponsor.tags.reduce((now, tg, i) => Object.assign(now, { [i]: tg }), {});
   printColumnList(newRow, 'tags', tagItems);
-  printColumn(newRow, sponsor.type, 'type');
 
   return newRow;
 };
@@ -128,7 +127,8 @@ export const generateTableBody = (sponsors: Sponsor[]) => {
   const tbodyRef = document.getElementById('sponsor-table').getElementsByTagName('pk-table-body')[0];
   //cleanup old table
   tbodyRef.innerHTML = '';
-  document.querySelector<HTMLElement>('#noContentFound').style.display = !sponsors.length ? 'hidden' : 'block';
+  const hideEmpty = sponsors.length ? 'none' : 'block';
+  document.querySelector<HTMLElement>('#noContentFound').style.display = hideEmpty;
   sponsors.forEach((sp) => tbodyRef.appendChild(mapSponsor(sp)));
 };
 

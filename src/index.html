@@ -167,24 +167,19 @@
             aligned="center"
           >
             <pk-table-header center>
-              <pk-table-header-col column-key="language" sortable>language </pk-table-header-col>
-              <pk-table-header-col column-key="code" sortable>code </pk-table-header-col>
-              <pk-table-header-col column-key="colour">colour </pk-table-header-col>
-              <pk-table-header-col column-key="secondaryColour"> secondaryColour </pk-table-header-col>
-              <pk-table-header-col column-key="image">image </pk-table-header-col>
-              <pk-table-header-col column-key="introText"> introText </pk-table-header-col>
-              <pk-table-header-col column-key="links">links </pk-table-header-col>
-              <pk-table-header-col id="indexTable" column-key="mainSponsor" sortable> mainSponsor</pk-table-header-col>
-              <pk-table-header-col column-key="name" sortable>name </pk-table-header-col>
-              <pk-table-header-col column-key="tags">tags </pk-table-header-col>
-              <pk-table-header-col column-key="type" sortable>type </pk-table-header-col>
+              <pk-table-header-col aligned="center" column-key="language" sortable>language</pk-table-header-col>
+              <pk-table-header-col aligned="center" column-key="info">info</pk-table-header-col>
+              <pk-table-header-col aligned="center" column-key="colors">assets</pk-table-header-col>                            
+              <pk-table-header-col aligned="center" column-key="introText">introText</pk-table-header-col>
+              <pk-table-header-col aligned="center" column-key="links">links</pk-table-header-col>              
+              <pk-table-header-col aligned="center" column-key="tags">tags</pk-table-header-col>              
             </pk-table-header>
             <pk-table-body class="pk-overflow--visible">            
             </pk-table-body>
           </pk-table>
         </div>
-        <div class="pk-col pk-col--span-6 pk-col--offset-3">
-          <pk-empty-message id="noContentFound">
+        <div id="noContentFound" class="pk-col pk-col--span-6 pk-col--offset-3">
+          <pk-empty-message>
             <div slot="title">We're sorry...</div>
             <div>No items are available for your selection.</div>
           </pk-empty-message>
