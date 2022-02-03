@@ -21,6 +21,7 @@
   "homepage": "https://github.com/emish89/sponsor-test-page#readme",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.2.1",
+    "gh-pages": "^3.2.3",
     "parcel": "^2.2.1",
     "prettier": "2.5.1",
     "rimraf": "^3.0.2"
