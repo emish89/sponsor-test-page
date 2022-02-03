@@ -1,96 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <title>Sponsor page</title>
     <!-- PROD -->
-    <script type="module"
-      src="https://panenka.uefa.com/panenka/panenka.js"></script>
-    <link rel="stylesheet"
-      href="https://panenka.uefa.com/panenka/panenka.css" />
+    <script type="module" src="https://panenka.uefa.com/panenka/panenka.js"></script>
+    <link rel="stylesheet" href="https://panenka.uefa.com/panenka/panenka.css" />
     <link rel="stylesheet" href="css/main.scss" />
   </head>
 
-  <body class="pk-root" pk-competition="wucl" pk-theme="light"
-    style="background-color: var(--pk-ui-02);">
-    <pk-simple-header bg-color="primary-01" bg-img="" icon-color="ui-06"
-      icon-size="24" close-href="" title-color="text-04" class="hydrated"
-      height="60" width="100%" text="Sponsor TEST page" content-max-width="100%"
+  <body class="pk-root" pk-competition="wucl" pk-theme="light" style="background-color: var(--pk-ui-02)">
+    <pk-simple-header
+      bg-color="primary-01"
+      bg-img=""
+      icon-color="ui-06"
+      icon-size="24"
+      close-href=""
+      title-color="text-04"
+      class="hydrated"
+      height="60"
+      width="100%"
+      text="Sponsor TEST page"
+      content-max-width="100%"
       style="
-          --pk-simple-header--bg-color: var(--pk-primary-01);
-          --pk-simple-header--title-color: var(--pk-text-04);
-          --pk-simple-header--height: 60px;
-          --pk-simple-header--width: 100%;
-          --pk-simple-header--content-max-width: 100%;
-        " disable-close="">
+        --pk-simple-header--bg-color: var(--pk-primary-01);
+        --pk-simple-header--title-color: var(--pk-text-04);
+        --pk-simple-header--height: 60px;
+        --pk-simple-header--width: 100%;
+        --pk-simple-header--content-max-width: 100%;
+      "
+      disable-close=""
+    >
     </pk-simple-header>
 
     <div class="pk-container">
-      <div
-        class="pk-row pk-mw--100 pk-align-items--center pk-justify-content--between">
+      <div class="pk-row pk-mw--100 pk-align-items--center pk-justify-content--between">
         <div class="pk-col">
           <pk-dropdown id="baseUrl">
-            <pk-button slot="trigger" class="adaptive-width hydrated"
-              appearance="contained" type="button">
+            <pk-button slot="trigger" class="adaptive-width hydrated" appearance="contained" type="button">
               environment
-              <pk-icon name="navigation-chevron-down" class="pk-ml--8 hydrated"
-                role="img"></pk-icon>
+              <pk-icon name="navigation-chevron-down" class="pk-ml--8 hydrated" role="img"></pk-icon>
               <small id="baseUrlSelection"></small>
             </pk-button>
             <pk-menu class="hydrated">
               <h4 slot="header">Use</h4>
-              <pk-menu-item class="hydrated" printValue="PRD"
-                value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}">
-                <pk-icon name="tab-bar-ucl-fantasy-active" color="primary-01"
-                  slot="prefix" role="img" class="hydrated"
-                  style="--pk-icon--color:var(--pk-primary-01);"></pk-icon>
+              <pk-menu-item
+                class="hydrated"
+                printValue="PRD"
+                value="https://fsp-sponsor-service-prod-fcql6.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
+              >
+                <pk-icon
+                  name="tab-bar-ucl-fantasy-active"
+                  color="primary-01"
+                  slot="prefix"
+                  role="img"
+                  class="hydrated"
+                  style="--pk-icon--color: var(--pk-primary-01)"
+                ></pk-icon>
                 PRODUCTION
               </pk-menu-item>
-              <pk-menu-item printValue="INT"
+              <pk-menu-item
+                printValue="INT"
                 value="https://fsp-sponsor-service.int.uefa.com/v1/sponsors?competitionIds={competition}&platform=DEFAULT&countryCode={countryCode}"
-                class="hydrated">INT</pk-menu-item>
+                class="hydrated"
+                >INT</pk-menu-item
+              >
               <span slot="footer">
-                <pk-identifier bg-color="elevation-01" rounded="true"
-                  border-radius="spacing-l">
+                <pk-identifier bg-color="elevation-01" rounded="true" border-radius="spacing-l">
                   <span slot="primary"> requires UEFA VPN</span>
-                  <pk-icon name="tab-bar-ucl-fantasy-active" color="primary-01"
-                    slot="suffix" role="img" class="hydrated"
-                    style="--pk-icon--color:var(--pk-primary-01);"></pk-icon>
+                  <pk-icon
+                    name="tab-bar-ucl-fantasy-active"
+                    color="primary-01"
+                    slot="suffix"
+                    role="img"
+                    class="hydrated"
+                    style="--pk-icon--color: var(--pk-primary-01)"
+                  ></pk-icon>
                 </pk-identifier>
               </span>
             </pk-menu>
           </pk-dropdown>
         </div>
         <div class="pk-col">
-          <pk-dropdown id="competitionId" name="competitionId"
-            panel-height="200px">
-            <pk-button slot="trigger" class="adaptive-width hydrated"
-              appearance="contained" type="button">
+          <pk-dropdown id="competitionId" name="competitionId" panel-height="200px">
+            <pk-button slot="trigger" class="adaptive-width hydrated" appearance="contained" type="button">
               competition
-              <pk-icon name="navigation-chevron-down" class="pk-ml--8 hydrated"
-                role="img"></pk-icon>
+              <pk-icon name="navigation-chevron-down" class="pk-ml--8 hydrated" role="img"></pk-icon>
               <small id="competitionIdSelection"></small>
             </pk-button>
-            <pk-menu class="hydrated" style="max-height: 200px;"></pk-menu>
+            <pk-menu class="hydrated" style="max-height: 200px"></pk-menu>
           </pk-dropdown>
         </div>
         <div class="pk-col">
           <div class="slide-panel-wrapper">
-            <pk-button class="toggle-button" aria-label="button"
-              appearance="contained" type="button" width="120"
+            <pk-button
+              class="toggle-button"
+              aria-label="button"
+              appearance="contained"
+              type="button"
+              width="120"
               high-contrast="false"
               onClick="javascript:document.querySelector('pk-side-panel').toggle()"
-              appearance="text">
+              appearance="text"
+            >
               Change nations
             </pk-button>
-            <pk-side-panel mobile-width="100vh" desktop-width="300px"
-              padding-left="12" padding-right="12" style="z-index: 10;">
-              <div slot="content" class="pk-ml--12 pk-mt--12 pk-mr--12"
-                style="height: 100%">
+            <pk-side-panel
+              mobile-width="100vh"
+              desktop-width="300px"
+              padding-left="12"
+              padding-right="12"
+              style="z-index: 10"
+            >
+              <div slot="content" class="pk-ml--12 pk-mt--12 pk-mr--12" style="height: 100%">
                 <div class="close-button">
-                  <pk-button
-                    onClick="javascript:document.querySelector('pk-side-panel').toggle()"
-                    appearance="icon">
+                  <pk-button onClick="javascript:document.querySelector('pk-side-panel').toggle()" appearance="icon">
                     <pk-icon color="text-02" name="close-web-icon" />
                   </pk-button>
                 </div>
@@ -100,51 +123,50 @@
           </div>
         </div>
         <div class="pk-col">
-          <pk-button aria-label="button" appearance="contained" type="button"
-            width="130" high-contrast="false" id="get-competition-button">
+          <pk-button
+            aria-label="button"
+            appearance="contained"
+            type="button"
+            width="130"
+            high-contrast="false"
+            id="get-competition-button"
+          >
             <small>Get competition Data</small>
           </pk-button>
         </div>
       </div>
       <div class="pk-row" id="pk-codes-chips"></div>
 
-      <div class="pk-row">
-        <pk-table class="pk-overflow--visible" table-id="sponsor-table"
-          with-divider row-divider="true" width=""  id="sponsor-table" loading
-          aria-describedby="sponsor-api-response" cell-vertical-pad="24">
+      <div class="pk-row pk-mw--100">
+        <pk-table
+          class="pk-overflow--visible"
+          table-id="sponsor-table"
+          with-divider="true"
+          row-divider="true"
+          width=""
+          id="sponsor-table"
+          loading
+          aria-describedby="sponsor-api-response"
+          cell-vertical-pad="24"
+          aligned="center"
+        >
           <pk-table-header center>
-            <pk-table-header-col column-key="language" sortable>language
-            </pk-table-header-col>
-            <pk-table-header-col column-key="code" sortable>code
-            </pk-table-header-col>
-            <pk-table-header-col column-key="colour">colour
-            </pk-table-header-col>
-            <pk-table-header-col column-key="secondaryColour">
-              secondaryColour
-            </pk-table-header-col>
-            <pk-table-header-col column-key="image">image
-            </pk-table-header-col>
-            <pk-table-header-col can-grow column-key="introText">
-              introText
-            </pk-table-header-col>
-            <pk-table-header-col column-key="links">links
-            </pk-table-header-col>
-            <pk-table-header-col id="indexTable" column-key="mainSponsor"
-              sortable>
-              mainSponsor</pk-table-header-col>
-            <pk-table-header-col column-key="name" sortable>name
-            </pk-table-header-col>
-            <pk-table-header-col column-key="tags">tags
-            </pk-table-header-col>
-            <pk-table-header-col column-key="type" sortable>type
-            </pk-table-header-col>
+            <pk-table-header-col column-key="language" sortable>language </pk-table-header-col>
+            <pk-table-header-col column-key="code" sortable>code </pk-table-header-col>
+            <pk-table-header-col column-key="colour">colour </pk-table-header-col>
+            <pk-table-header-col column-key="secondaryColour"> secondaryColour </pk-table-header-col>
+            <pk-table-header-col column-key="image">image </pk-table-header-col>
+            <pk-table-header-col can-grow column-key="introText"> introText </pk-table-header-col>
+            <pk-table-header-col column-key="links">links </pk-table-header-col>
+            <pk-table-header-col id="indexTable" column-key="mainSponsor" sortable> mainSponsor</pk-table-header-col>
+            <pk-table-header-col column-key="name" sortable>name </pk-table-header-col>
+            <pk-table-header-col column-key="tags">tags </pk-table-header-col>
+            <pk-table-header-col column-key="type" sortable>type </pk-table-header-col>
           </pk-table-header>
-          <pk-table-body class="pk-overflow--visible">
-          </pk-table-body>
+          <pk-table-body class="pk-overflow--visible"> </pk-table-body>
         </pk-table>
       </div>
     </div>
   </body>
   <script type="module" src="./main.ts"></script>
-
 </html>
