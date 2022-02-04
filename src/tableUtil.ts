@@ -24,7 +24,7 @@ const createPkIdentifier = (propValue: string, bgColor = 'white', color = 'black
     const pkSec = document.createElement('span');
     pkSec.setAttribute('slot', 'secondary');
     pkSec.textContent = columnKey;
-    pkIdentifier.primarySize = '24'
+    pkIdentifier.primarySize = '24';
     pkIdentifier.appendChild(document.createElement('pk-divider'));
     pkIdentifier.appendChild(pkSec);
   }
@@ -53,8 +53,14 @@ export const printColumnItems = (newRow: HTMLElement, columnKey: string, pkIdent
 /**
  * print column from list of values
  */
-export const printColumnList = (newRow: HTMLElement, columnKey: string, propObj: { [key: string]: string }) => {
+export const printColumnList = (
+  newRow: HTMLElement,
+  columnKey: string,
+  propObj: { [key: string]: string },
+  addCopyButton?: boolean,
+) => {
   const ul = document.createElement('pk-data-card');
+  ul.style.width = 'fit-content';
   const header = document.createElement('div');
   header.setAttribute('slot', 'body');
   for (const key in propObj) {
@@ -72,11 +78,21 @@ export const printColumnList = (newRow: HTMLElement, columnKey: string, propObj:
     pkId.textContent = propObj[key];
     pkIdentifier.appendChild(prefix);
     pkIdentifier.appendChild(pkId);
+    if (addCopyButton) {
+      const suffix = document.createElement('span');
+      suffix.classList.add('clickable-identifiers');
+      suffix.slot = 'suffix';
+      const icon = document.createElement('pk-icon');
+      icon.name = 'actions-copy';
+      suffix.appendChild(icon);
+      suffix.addEventListener('click', () => navigator.clipboard.writeText(propObj[key]));
+      pkIdentifier.appendChild(suffix);
+    }
     li.appendChild(pkIdentifier);
     header.appendChild(li);
   }
   ul.appendChild(header);
-  newRow.appendChild(makePkCell(columnKey, ul));
+  newRow.appendChild(newRow.tagName === 'PK-TABLE-ROW' ? makePkCell(columnKey, ul) : ul);
 };
 
 /**
@@ -102,19 +118,25 @@ export const mapSponsor = (sponsor: Sponsor) => {
   ]);
 
   // image cell
-  const image = document.createElement('pk-table-cell');
   var img = document.createElement('img');
   img.src = sponsor.image;
-  image.appendChild(img);
-  image.setAttribute('column-key', 'image');
-  image.style.backgroundColor = 'white';
-  image.style.color = 'black';
   const lastNode = newRow.children.item(newRow.children.length - 1);
-  lastNode.appendChild(image);
+  lastNode.appendChild(img);
+
+  const btn = document.createElement('pk-button');
+  btn.classList.remove('adaptive-width');
+  btn.textContent = 'Open links';
+  btn.addEventListener('click', () => {
+    const e = document.querySelector<HTMLElement>('#urls-showing');
+    e.innerHTML = '';
+    printColumnList(e, 'links', sponsor.links, true);
+    const e2 = document.querySelector('pk-overlay');
+    e2.isOpen = true;
+  });
+  const urlsCell = makePkCell('links', btn);
+  newRow.appendChild(urlsCell);
 
   printColumnList(newRow, 'introText', sponsor.introText.translations);
-  printColumnList(newRow, 'links', sponsor.links);
-
   const tagItems = sponsor.tags.reduce((now, tg, i) => Object.assign(now, { [i]: tg }), {});
   printColumnList(newRow, 'tags', tagItems);
 

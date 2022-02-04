@@ -47,3 +47,12 @@ th {
     }
   }
 }
+
+.clickable-identifiers {  
+  &:hover {
+    box-shadow: 2px 2px #9c9c9c;
+  }
+  &:active {
+    background-color: var(--pk-ui-02);
+  }
+}
