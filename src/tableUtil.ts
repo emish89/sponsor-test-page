@@ -161,10 +161,10 @@ export const generateTableBody = (sponsors: Sponsor[]) => {
  * @param event
  * @param items
  */
-export const sortTableBy = (event: CustomEvent, items: { [key: string]: Sponsor }) => {
+export const sortTableBy = (columnKey: string, order: string, items: { [key: string]: Sponsor }) => {
   const tableElement = document.querySelector<HTMLElement>('pk-table');
   const tableBodyElement = tableElement.querySelector<HTMLElement>('pk-table-body');
   tableBodyElement.style.height = `${tableBodyElement.offsetHeight}px`;
-  const sortSponsors = Object.values(items).sort(compareValues(event.detail.columnKey, event.detail.order));
+  const sortSponsors = Object.values(items).sort(compareValues(columnKey, order));
   generateTableBody(sortSponsors);
 };

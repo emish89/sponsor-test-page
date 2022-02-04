@@ -45,7 +45,7 @@ const getCompetitionData = () => {
 
   const apiCalls = [];
   clearPreviousHashedItems();
-  const table = document.querySelector<HTMLPkTableElement>('#sponsor-table');  
+  const table = document.querySelector<HTMLPkTableElement>('#sponsor-table');
   table.loading = true;
   //loop through comp and countries
   cups.forEach((competitionId) => {
@@ -63,7 +63,7 @@ const getCompetitionData = () => {
   // as soon as all the api calls are done...
   Promise.all(apiCalls).then(() => {
     console.info(`all your urls are belong to us`);
-    generateTableBody(Object.values(arrayResponseHashes));
+    sortTableBy('mainSponsor', 'ASC', arrayResponseHashes);
     table.loading = false;
   });
 };
@@ -84,7 +84,9 @@ document.querySelector('#select-all-checkboxes').addEventListener('click', () =>
 document.querySelector('#clear-all-checkboxes').addEventListener('click', () => toggleCheckboxes(false));
 
 document.getElementById('get-competition-button').addEventListener('click', getCompetitionData);
-document.addEventListener('pkTableSortBy', (ev: CustomEvent) => sortTableBy(ev, arrayResponseHashes));
+document.addEventListener('pkTableSortBy', (ev: CustomEvent) =>
+  sortTableBy(ev.detail.columnKey, ev.detail.order, arrayResponseHashes),
+);
 
 /**
  * first load setup
