@@ -5,7 +5,7 @@ const makePkCells = (columnKey: string, appendItems: Node[]) => {
   newItem.setAttribute('column-key', columnKey);
   newItem.withDivider = true;
   newItem.classList.add('pk-text--wrap', 'pk-text--break');
-  newItem.style.setProperty('--pk-cell--justify-content', 'center');
+  newItem.style.setProperty('--pk-cell--justify-content', 'space-evenly');
   appendItems.forEach((ap) => newItem.appendChild(ap));
   if (appendItems.length > 1) newItem.classList.add('pk-flex--column');
   return newItem;
