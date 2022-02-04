@@ -24,6 +24,8 @@ const createPkIdentifier = (propValue: string, bgColor = 'white', color = 'black
     const pkSec = document.createElement('span');
     pkSec.setAttribute('slot', 'secondary');
     pkSec.textContent = columnKey;
+    pkIdentifier.primarySize = '24'
+    pkIdentifier.appendChild(document.createElement('pk-divider'));
     pkIdentifier.appendChild(pkSec);
   }
   pkIdentifier.alignment = 'center';
@@ -89,13 +91,13 @@ export const mapSponsor = (sponsor: Sponsor) => {
   // Insert a cell at the end of the row
   printColumn(newRow, sponsor.language, 'language');
   printColumnItems(newRow, 'info', [
+    createPkIdentifier(sponsor.mainSponsor, '', '', 'mainSponsor'),
     createPkIdentifier(sponsor.code, '', '', 'code'),
     createPkIdentifier(sponsor.name, '', '', 'name'),
-    createPkIdentifier(sponsor.mainSponsor, '', '', 'mainSponsor'),
     createPkIdentifier(sponsor.type, '', '', 'type'),
   ]);
   printColumnItems(newRow, 'colors', [
-    createPkIdentifier(sponsor.colour, sponsor.colour, sponsor.secondaryColour, 'color'),
+    createPkIdentifier(sponsor.colour, sponsor.colour, sponsor.secondaryColour, 'main'),
     createPkIdentifier(sponsor.secondaryColour, sponsor.secondaryColour, sponsor.colour, 'secondary'),
   ]);
 

@@ -68,3 +68,27 @@ export const fetchComps = async () => {
   }
   return JSON.parse(comps) as Competition[];
 };
+
+export const makeToast = (titleText: string) => {
+  const prevToasts = document.querySelectorAll('pk-toast');
+  prevToasts.forEach((pt) => pt.parentNode.removeChild(pt));
+
+  const pkToast = document.createElement('pk-toast');
+  const pkToastItem = document.createElement('pk-toast-item');
+  pkToastItem.appearance = 'warning';
+  pkToastItem.dismiss = 'mixed';
+  pkToastItem.closeButton = true;
+  pkToastItem.dismissDelay = 3000;
+  const icon = document.createElement('div');
+  icon.slot = 'icon';
+  const pkicon = document.createElement('pk-icon');
+  pkicon.name = 'support-alert';
+  pkicon.color = 'support-02';
+  icon.appendChild(pkicon);
+  const title = document.createElement('div');
+  title.slot = 'title';
+  title.textContent = titleText;
+  pkToastItem.append(icon, title);
+  pkToast.append(pkToastItem);
+  return pkToast;
+};

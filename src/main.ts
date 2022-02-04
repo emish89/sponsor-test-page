@@ -6,7 +6,7 @@ import {
   updateCustomInput,
 } from './selectorsUtil';
 import { generateTableBody, sortTableBy } from './tableUtil';
-import { fetchComps, hashCode, Sponsor } from './util';
+import { fetchComps, hashCode, makeToast, Sponsor } from './util';
 
 const arrayResponseHashes: { [key: string]: Sponsor } = {};
 
@@ -33,7 +33,13 @@ const extractSponsorItems = (sponsors: Sponsor[], countryCode: string) => {
 const getCompetitionData = () => {
   const { cupArray: cups, countries, url: baseEndpoint } = extractInputData();
   if (!cups.length || !countries.length || !baseEndpoint) {
-    alert('Please select min. 1 country, the desidered cup and the endpoint host');
+    let text = 'You miss: ';
+    if (!baseEndpoint) text += 'the endpoint to use - ';
+    if (!cups.length) text += 'the desidered cup - ';
+    if (!countries.length) text += 'a min. of 1 country - ';
+
+    const sendToast = document.querySelector('#pk-codes-chips');
+    sendToast.appendChild(makeToast(text.substring(0, text.length - 2)));    
     return;
   }
 
@@ -73,7 +79,7 @@ dropdownSelectors.forEach((selector) => {
 
 createCountryCheckboxes();
 document.querySelector('#select-all-checkboxes').addEventListener('click', () => toggleCheckboxes(true));
-document.querySelector('#clear-all-checkboxes').addEventListener('click',  () => toggleCheckboxes(false));
+document.querySelector('#clear-all-checkboxes').addEventListener('click', () => toggleCheckboxes(false));
 
 document.getElementById('get-competition-button').addEventListener('click', getCompetitionData);
 document.addEventListener('pkTableSortBy', (ev: CustomEvent) => sortTableBy(ev, arrayResponseHashes));
