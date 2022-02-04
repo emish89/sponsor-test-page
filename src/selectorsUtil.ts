@@ -15,34 +15,51 @@ function getCheckedCheckboxes() {
   return list;
 }
 
-export const toggleCheckboxes = (check: boolean) => {
+export const toggleCheckboxes = async (check: boolean) => {
+  if (check) {
+    const sidePanel = document.querySelector('pk-side-panel');
+    await sidePanel.toggle();
+  }
   const checkboxes = getCountryCheckboxes();
   checkboxes.forEach((cb) => (cb.checked = check));
 };
 
 export const makeCountryAvatars = () => {
   const pkChip = document.querySelector('#pk-codes-chips');
-  pkChip.textContent = '';
-  const activeCheckboxes = getCheckedCheckboxes();
-  const tooManyCheckboxes = activeCheckboxes.length > 40;
-  const stopPrinting = tooManyCheckboxes ? 40 : activeCheckboxes.length;
-  for (let index = 0; index < stopPrinting; index++) {
-    const ac = activeCheckboxes[index];
+  const checkboxes = getCountryCheckboxes();
+  const ch: Node[] = [];
+  for (let index = 0; index < checkboxes.length; index++) {
+    const ac = checkboxes[index];
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('icon-wrapper');
+    wrapper.dataset.countryValue = ac.value;
+    if (!defaultSelectedCountries.includes(ac.value)) wrapper.style.display = 'none';
+    const container = document.createElement('div');
+    container.classList.add('icon-container', 'pk-flex--column');
     const chip = document.createElement('pk-avatar');
     chip.type = 'image';
     chip.size = 48;
     chip.style.padding = 'var(--pk-spacing-xs2)';
     chip.src = `http://purecatamphetamine.github.io/country-flag-icons/3x2/${ac.value}.svg`;
     chip.title = ac.value;
-    pkChip.appendChild(chip);
+    const code = document.createElement('span');
+    code.textContent = ac.value;
+    container.append(chip, code);
+    wrapper.appendChild(container);
+    ch.push(wrapper);
   }
-  if (tooManyCheckboxes) pkChip.appendChild(document.createTextNode('...'));
+  pkChip.append(...ch);
 };
 
 const setupCheckboxEventListeners = () => {
   const checkboxes = getCountryCheckboxes();
   checkboxes.forEach((ck) => {
-    ck.addEventListener('checkboxChange', makeCountryAvatars);
+    ck.addEventListener('checkboxChange', (event: CustomEvent<{ isChecked: boolean }>) => {
+      const pkAvatar = document
+        .querySelector('#pk-codes-chips')
+        .querySelector(`div[data-country-value="${(event.target as HTMLPkCheckboxElement).value}"]`) as HTMLElement;
+      pkAvatar.style.display = event.detail.isChecked ? 'block' : 'none';
+    });
   });
 };
 
@@ -79,8 +96,10 @@ export const createCountryCheckboxes = () => {
     checkboxContainer.appendChild(id);
   });
   setupCheckboxEventListeners();
+  makeCountryAvatars();
 };
 
+/** inputs section */
 export const updateCustomInput = (event: CustomEvent<{ item: HTMLPkMenuItemElement }>, selectorID: string) => {
   const tE = event.target as HTMLElement;
   for (let i = 0; i < tE.children.length; i += 1) {

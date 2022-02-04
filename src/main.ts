@@ -72,9 +72,8 @@ dropdownSelectors.forEach((selector) => {
 });
 
 createCountryCheckboxes();
-makeCountryAvatars();
 document.querySelector('#select-all-checkboxes').addEventListener('click', () => toggleCheckboxes(true));
-document.querySelector('#clear-all-checkboxes').addEventListener('click', () => toggleCheckboxes(false));
+document.querySelector('#clear-all-checkboxes').addEventListener('click',  () => toggleCheckboxes(false));
 
 document.getElementById('get-competition-button').addEventListener('click', getCompetitionData);
 document.addEventListener('pkTableSortBy', (ev: CustomEvent) => sortTableBy(ev, arrayResponseHashes));
