@@ -45,7 +45,8 @@ const getCompetitionData = () => {
 
   const apiCalls = [];
   clearPreviousHashedItems();
-
+  const table = document.querySelector<HTMLPkTableElement>('#sponsor-table');
+  table.loading = true;
   //loop through comp and countries
   cups.forEach((competitionId) => {
     countries.forEach((countryCode) => {
@@ -63,6 +64,7 @@ const getCompetitionData = () => {
   Promise.all(apiCalls).then(() => {
     console.info(`all your urls are belong to us`);
     generateTableBody(Object.values(arrayResponseHashes));
+    table.loading = false;
   });
 };
 
