@@ -39,13 +39,13 @@ const getCompetitionData = () => {
     if (!countries.length) text += 'a min. of 1 country - ';
 
     const sendToast = document.querySelector('#pk-codes-chips');
-    sendToast.appendChild(makeToast(text.substring(0, text.length - 2)));    
+    sendToast.appendChild(makeToast(text.substring(0, text.length - 2)));
     return;
   }
 
   const apiCalls = [];
   clearPreviousHashedItems();
-  const table = document.querySelector<HTMLPkTableElement>('#sponsor-table');
+  const table = document.querySelector<HTMLPkTableElement>('#sponsor-table');  
   table.loading = true;
   //loop through comp and countries
   cups.forEach((competitionId) => {
