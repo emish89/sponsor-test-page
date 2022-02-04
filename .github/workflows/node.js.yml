@@ -18,6 +18,12 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
+      - name: login to panenka
+        with:
+          repo-token: ${{ github.token }}
+        run: 
+          npm config set @uefadigital:registry=https://npm.pkg.github.com
+          npm config set //npm.pkg.github.com/:_authToken ${{ github.token }}
       - name: Install dependencies
         run: npm ci      
       - name: Build
